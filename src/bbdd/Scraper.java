@@ -8,14 +8,13 @@ import org.jsoup.nodes.*;
 import org.jsoup.select.*;
 import java.util.ArrayList;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.List;
 
-
-
 public class Scraper {
-    
+
     public static ArrayList<Grafica> graficas = new ArrayList<>();
-    
+
     // OBTENCION DE DATOS MEDIANTE SCRAPE
     public void scrape() {
         try {
@@ -43,16 +42,13 @@ public class Scraper {
 
             Elements elements = document.select(".vs-product-card");
 
-            
-
             //int num = 1;
             for (Element element : elements) {
                 String grafica_nombre = element.select("a").text().trim().split("Tarjetas")[0].replace("™", "").replace("®", "");
 
                 String grafica_id = element.attr("data-id");
-                
-                //int grafica_id = Integer.parseInt(id);
 
+                //int grafica_id = Integer.parseInt(id);
                 String precio = element.select(".vs-product-card-prices > span:first-child").text().trim().split(" ")[0].replace(".", "").replace(",", ".");
 
                 Float grafica_precio = Float.parseFloat(precio);
@@ -60,13 +56,12 @@ public class Scraper {
                 String grafica_fabricante = Fabricante(grafica_nombre);
 
                 String grafica_marca = Marca(grafica_nombre);
-                
+
                 int grafica_vram = VRAM(grafica_nombre);
-                
-                
+
                 Grafica grafica = new Grafica(grafica_id, grafica_nombre, grafica_vram, grafica_marca, grafica_fabricante, grafica_precio);
                 graficas.add(grafica);
-                
+
                 /* 
                  System.out.print("Gráfica "+ num+ ": "); 
                  System.out.print("ID: "+ grafica_id);
@@ -89,20 +84,19 @@ public class Scraper {
                  System.out.println("\n");
                 
                  num++;
-                */
-                
+                 */
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     // VER CONTENIDO EN EL ARRAYLIST
-    public void VerDatos(){
-        for(int i = 0 ; i< graficas.size(); i++){
+    public void VerDatos() {
+        for (int i = 0; i < graficas.size(); i++) {
             Grafica curr = graficas.get(i);
-            System.out.print(i+1+" ");
+            System.out.print(i + 1 + " ");
             System.out.println(curr);
         }
     }
@@ -111,125 +105,138 @@ public class Scraper {
     private static String Fabricante(String grafica_nombre) {
         String fabricante = "";
         //System.out.print("Fabricante: ");
-                if(grafica_nombre.toLowerCase().contains("nvidia") || grafica_nombre.toLowerCase().contains("geforce") 
-                || grafica_nombre.toLowerCase().contains("rtx") || grafica_nombre.toLowerCase().contains("gt") || grafica_nombre.toLowerCase().contains("gtx")){
-                    fabricante = "Nvidia";
-                    
-                }else if(grafica_nombre.contains("Radeon")){
-                    fabricante = "AMD";
-                    
-                }
-                
-                return fabricante;
+        if (grafica_nombre.toLowerCase().contains("nvidia") || grafica_nombre.toLowerCase().contains("geforce")
+                || grafica_nombre.toLowerCase().contains("rtx") || grafica_nombre.toLowerCase().contains("gt") || grafica_nombre.toLowerCase().contains("gtx")) {
+            fabricante = "Nvidia";
+
+        } else if (grafica_nombre.contains("Radeon")) {
+            fabricante = "AMD";
+
+        }
+
+        return fabricante;
     }
-    
+
     // OBTENCION DE MARCA
     private static String Marca(String grafica_nombre) {
         String marca = "";
         //System.out.print("Marca / Ensamblador: ");
-                if(grafica_nombre.toLowerCase().contains("asus")){
-                    marca = "ASUS";
-                    
-                }else if(grafica_nombre.toLowerCase().contains("rog")){
-                    marca = "ROG";
-                    
-                }else if(grafica_nombre.toLowerCase().contains("msi")){
-                    marca = "MSI";
-                    
-                }else if(grafica_nombre.toLowerCase().contains("zotac")){
-                    marca = "ZOTAC";
-                    
-                }else if(grafica_nombre.toLowerCase().contains("gigabyte")){
-                    marca = "GIGABYTE";
-                    
-                }else if(grafica_nombre.toLowerCase().contains("asrock")){
-                    marca = "ASROCK";
-                    
-                }else if(grafica_nombre.toLowerCase().contains("evga")){
-                    marca = "EVGA";
-                    
-                }else if(grafica_nombre.toLowerCase().contains("pny")){
-                    marca = "PNY";
-                    ;
-                }else if(grafica_nombre.toLowerCase().contains("palit")){
-                    marca = "PALIT";
-                    
-                }
-                return marca;
+        if (grafica_nombre.toLowerCase().contains("asus")) {
+            marca = "ASUS";
+
+        } else if (grafica_nombre.toLowerCase().contains("rog")) {
+            marca = "ROG";
+
+        } else if (grafica_nombre.toLowerCase().contains("msi")) {
+            marca = "MSI";
+
+        } else if (grafica_nombre.toLowerCase().contains("zotac")) {
+            marca = "ZOTAC";
+
+        } else if (grafica_nombre.toLowerCase().contains("gigabyte")) {
+            marca = "GIGABYTE";
+
+        } else if (grafica_nombre.toLowerCase().contains("asrock")) {
+            marca = "ASROCK";
+
+        } else if (grafica_nombre.toLowerCase().contains("evga")) {
+            marca = "EVGA";
+
+        } else if (grafica_nombre.toLowerCase().contains("pny")) {
+            marca = "PNY";
+            ;
+        } else if (grafica_nombre.toLowerCase().contains("palit")) {
+            marca = "PALIT";
+
+        }
+        return marca;
     }
 
     // OBTENCION DE VRAM
-    private static int VRAM(String grafica_nombre){
+    private static int VRAM(String grafica_nombre) {
         int vram = 0;
         //System.out.print("VRAM (GB): ");
-                if(grafica_nombre.toLowerCase().contains("24gb") || grafica_nombre.toLowerCase().contains("24 gb") 
-                || grafica_nombre.toLowerCase().contains("24g") || grafica_nombre.toLowerCase().contains("24 g")){
-                    vram = 24;
-                    
-                }else if(grafica_nombre.toLowerCase().contains("20gb") || grafica_nombre.toLowerCase().contains("20 gb") 
-                || grafica_nombre.toLowerCase().contains("20g") || grafica_nombre.toLowerCase().contains("20 g")){
-                    vram = 20;
-                    
-                }else if(grafica_nombre.toLowerCase().contains("16gb") || grafica_nombre.toLowerCase().contains("16 gb") 
-                || grafica_nombre.toLowerCase().contains("16g") || grafica_nombre.toLowerCase().contains("16 g") 
-                || grafica_nombre.toLowerCase().contains("6800")){
-                    vram = 16;
-                    
-                }else if(grafica_nombre.toLowerCase().contains("12gb") || grafica_nombre.toLowerCase().contains("12 gb") 
-                || grafica_nombre.toLowerCase().contains("12g") || grafica_nombre.toLowerCase().contains("12 g")){
-                    vram = 12;
-                    
-                }else if(grafica_nombre.toLowerCase().contains("10gb") || grafica_nombre.toLowerCase().contains("10 gb") 
-                || grafica_nombre.toLowerCase().contains("10g") || grafica_nombre.toLowerCase().contains("10 g")){
-                    vram = 10;
-                    
-                }else if(grafica_nombre.toLowerCase().contains("8gb") || grafica_nombre.toLowerCase().contains("8 gb") 
-                || grafica_nombre.toLowerCase().contains("8g") || grafica_nombre.toLowerCase().contains("8 g")){
-                    vram = 8;
-                    
-                }else if(grafica_nombre.toLowerCase().contains("6gb") || grafica_nombre.toLowerCase().contains("6 gb") 
-                || grafica_nombre.toLowerCase().contains("6g") || grafica_nombre.toLowerCase().contains("6 g")){
-                    vram = 6;
-                    
-                }else if(grafica_nombre.toLowerCase().contains("4gb") || grafica_nombre.toLowerCase().contains("4 gb") 
-                || grafica_nombre.toLowerCase().contains("4g") || grafica_nombre.toLowerCase().contains("4 g")){
-                    vram = 4;
-                    
-                }else if(grafica_nombre.toLowerCase().contains("2gb") || grafica_nombre.toLowerCase().contains("2 gb") 
-                || grafica_nombre.toLowerCase().contains("2g") || grafica_nombre.toLowerCase().contains("2 g")){
-                    vram = 2;
-                    
-                }
-                return vram;
+        if (grafica_nombre.toLowerCase().contains("24gb") || grafica_nombre.toLowerCase().contains("24 gb")
+                || grafica_nombre.toLowerCase().contains("24g") || grafica_nombre.toLowerCase().contains("24 g")) {
+            vram = 24;
+
+        } else if (grafica_nombre.toLowerCase().contains("20gb") || grafica_nombre.toLowerCase().contains("20 gb")
+                || grafica_nombre.toLowerCase().contains("20g") || grafica_nombre.toLowerCase().contains("20 g")) {
+            vram = 20;
+
+        } else if (grafica_nombre.toLowerCase().contains("16gb") || grafica_nombre.toLowerCase().contains("16 gb")
+                || grafica_nombre.toLowerCase().contains("16g") || grafica_nombre.toLowerCase().contains("16 g")
+                || grafica_nombre.toLowerCase().contains("6800")) {
+            vram = 16;
+
+        } else if (grafica_nombre.toLowerCase().contains("12gb") || grafica_nombre.toLowerCase().contains("12 gb")
+                || grafica_nombre.toLowerCase().contains("12g") || grafica_nombre.toLowerCase().contains("12 g")) {
+            vram = 12;
+
+        } else if (grafica_nombre.toLowerCase().contains("10gb") || grafica_nombre.toLowerCase().contains("10 gb")
+                || grafica_nombre.toLowerCase().contains("10g") || grafica_nombre.toLowerCase().contains("10 g")) {
+            vram = 10;
+
+        } else if (grafica_nombre.toLowerCase().contains("8gb") || grafica_nombre.toLowerCase().contains("8 gb")
+                || grafica_nombre.toLowerCase().contains("8g") || grafica_nombre.toLowerCase().contains("8 g")) {
+            vram = 8;
+
+        } else if (grafica_nombre.toLowerCase().contains("6gb") || grafica_nombre.toLowerCase().contains("6 gb")
+                || grafica_nombre.toLowerCase().contains("6g") || grafica_nombre.toLowerCase().contains("6 g")) {
+            vram = 6;
+
+        } else if (grafica_nombre.toLowerCase().contains("4gb") || grafica_nombre.toLowerCase().contains("4 gb")
+                || grafica_nombre.toLowerCase().contains("4g") || grafica_nombre.toLowerCase().contains("4 g")) {
+            vram = 4;
+
+        } else if (grafica_nombre.toLowerCase().contains("2gb") || grafica_nombre.toLowerCase().contains("2 gb")
+                || grafica_nombre.toLowerCase().contains("2g") || grafica_nombre.toLowerCase().contains("2 g")) {
+            vram = 2;
+
+        }
+        return vram;
     }
 
-    
     // CARGA DE LOS DATOS EN LA BBDD
     public static void insertGraficas(List<Grafica> graficas) throws SQLException {
-        
 
         for (Grafica grafica : graficas) {
+            String id = grafica.getId();
+            String sql = "SELECT id FROM graficas WHERE id = '" + id + "'";
+            ResultSet rs = Conexion.ejecutarSentencia(sql);
 
-            String sql = "INSERT INTO graficas (id, nombre, vram, marca, fabricante, precio) VALUES (" + 
-            grafica.getId() +", \""+
-            grafica.getNombre() +"\", \""+
-            grafica.getVram() +"\", \""+
-            grafica.getMarca() +"\", \""+
-            grafica.getFabricante() +"\", "+
-            grafica.getPrecio() +
-             ")";
-            Conexion.ejecutarSentencia(sql); 
+            if (!rs.next()) {
+
+                sql = "INSERT INTO graficas (id, nombre, vram, marca, fabricante, precio) VALUES ("
+                        + grafica.getId() + ", \""
+                        + grafica.getNombre() + "\", \""
+                        + grafica.getVram() + "\", \""
+                        + grafica.getMarca() + "\", \""
+                        + grafica.getFabricante() + "\", "
+                        + grafica.getPrecio()
+                        + ")";
+                Conexion.ejecutarSentencia(sql);
+            }
         }
-    
-}
+
+    }
+
+    // UPDATE DE LOS DATOS EN LA BBDD
+    public static void updateGraficas(List<Grafica> graficas) throws SQLException {
+
+        for (Grafica grafica : graficas) {
+            String id = grafica.getId();
+            float precio = grafica.getPrecio();
+
+            String sql = "UPDATE graficas SET precio = " + precio + " WHERE id = " + id;
+
+            Conexion.ejecutarUpdate(sql);
+        }
+
+    }
 
     public ArrayList<Grafica> getGraficas() {
         return graficas;
     }
-
-
-
-    
-
 
 }
