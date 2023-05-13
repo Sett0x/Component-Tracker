@@ -1,20 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
+import controller.*;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- *
- * @author jose9
- */
 public class vista extends javax.swing.JFrame {
-
-    /**
-     * Creates new form vista
-     */
+    
+    
     public vista() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -33,11 +28,10 @@ public class vista extends javax.swing.JFrame {
         Edit = new javax.swing.JButton();
         Delete = new javax.swing.JButton();
         Add = new javax.swing.JButton();
-        Exportar = new javax.swing.JButton();
         Update = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         Table = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        Tablebbdd = new javax.swing.JTable();
         Web = new javax.swing.JComboBox<>();
         Label_Web = new javax.swing.JLabel();
         Label_Componente = new javax.swing.JLabel();
@@ -77,9 +71,12 @@ public class vista extends javax.swing.JFrame {
 
         Add.setText("Añadir");
 
-        Exportar.setText("Exportar");
-
         Update.setText("Actualizar");
+        Update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout FuncionesLayout = new javax.swing.GroupLayout(Funciones);
         Funciones.setLayout(FuncionesLayout);
@@ -89,8 +86,7 @@ public class vista extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(FuncionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FuncionesLayout.createSequentialGroup()
-                        .addComponent(Exportar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(Exit))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FuncionesLayout.createSequentialGroup()
                         .addComponent(Add)
@@ -98,7 +94,7 @@ public class vista extends javax.swing.JFrame {
                         .addComponent(Edit)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Delete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 401, Short.MAX_VALUE)
                         .addComponent(Update)
                         .addGap(18, 18, 18)
                         .addComponent(Scan)))
@@ -115,12 +111,10 @@ public class vista extends javax.swing.JFrame {
                     .addComponent(Delete)
                     .addComponent(Update))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-                .addGroup(FuncionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Exit)
-                    .addComponent(Exportar)))
+                .addComponent(Exit))
         );
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        Tablebbdd.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -128,23 +122,23 @@ public class vista extends javax.swing.JFrame {
                 "ID", "NOMBRE", "VRAM", "MARCA", "FABRICANTE", "PRECIO"
             }
         ));
-        Table.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setMinWidth(60);
-            jTable2.getColumnModel().getColumn(0).setPreferredWidth(60);
-            jTable2.getColumnModel().getColumn(0).setMaxWidth(60);
-            jTable2.getColumnModel().getColumn(2).setMinWidth(60);
-            jTable2.getColumnModel().getColumn(2).setPreferredWidth(60);
-            jTable2.getColumnModel().getColumn(2).setMaxWidth(60);
-            jTable2.getColumnModel().getColumn(3).setMinWidth(100);
-            jTable2.getColumnModel().getColumn(3).setPreferredWidth(100);
-            jTable2.getColumnModel().getColumn(3).setMaxWidth(100);
-            jTable2.getColumnModel().getColumn(4).setMinWidth(100);
-            jTable2.getColumnModel().getColumn(4).setPreferredWidth(100);
-            jTable2.getColumnModel().getColumn(4).setMaxWidth(100);
-            jTable2.getColumnModel().getColumn(5).setMinWidth(100);
-            jTable2.getColumnModel().getColumn(5).setPreferredWidth(100);
-            jTable2.getColumnModel().getColumn(5).setMaxWidth(100);
+        Table.setViewportView(Tablebbdd);
+        if (Tablebbdd.getColumnModel().getColumnCount() > 0) {
+            Tablebbdd.getColumnModel().getColumn(0).setMinWidth(60);
+            Tablebbdd.getColumnModel().getColumn(0).setPreferredWidth(60);
+            Tablebbdd.getColumnModel().getColumn(0).setMaxWidth(60);
+            Tablebbdd.getColumnModel().getColumn(2).setMinWidth(60);
+            Tablebbdd.getColumnModel().getColumn(2).setPreferredWidth(60);
+            Tablebbdd.getColumnModel().getColumn(2).setMaxWidth(60);
+            Tablebbdd.getColumnModel().getColumn(3).setMinWidth(100);
+            Tablebbdd.getColumnModel().getColumn(3).setPreferredWidth(100);
+            Tablebbdd.getColumnModel().getColumn(3).setMaxWidth(100);
+            Tablebbdd.getColumnModel().getColumn(4).setMinWidth(100);
+            Tablebbdd.getColumnModel().getColumn(4).setPreferredWidth(100);
+            Tablebbdd.getColumnModel().getColumn(4).setMaxWidth(100);
+            Tablebbdd.getColumnModel().getColumn(5).setMinWidth(100);
+            Tablebbdd.getColumnModel().getColumn(5).setPreferredWidth(100);
+            Tablebbdd.getColumnModel().getColumn(5).setMaxWidth(100);
         }
 
         Web.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "VsGamers" }));
@@ -267,7 +261,7 @@ public class vista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_ExitActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
@@ -275,7 +269,11 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_DeleteActionPerformed
 
     private void ScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ScanActionPerformed
-        // TODO add your handling code here:
+        try {
+            Controlador.Scan();
+        } catch (SQLException ex) {
+            Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_ScanActionPerformed
 
     private void Order_VRAMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_VRAMActionPerformed
@@ -285,6 +283,14 @@ public class vista extends javax.swing.JFrame {
     private void WebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WebActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_WebActionPerformed
+
+    private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
+        try {
+            Controlador.Update();
+        } catch (SQLException ex) {
+            Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_UpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,7 +333,6 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JButton Delete;
     private javax.swing.JButton Edit;
     private javax.swing.JButton Exit;
-    private javax.swing.JButton Exportar;
     private javax.swing.JPanel Funciones;
     private javax.swing.JLabel Label_Componente;
     private javax.swing.JLabel Label_Web;
@@ -337,11 +342,11 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> Order_VRAM;
     private javax.swing.JButton Scan;
     private javax.swing.JScrollPane Table;
+    private javax.swing.JTable Tablebbdd;
     private javax.swing.JButton Update;
     private javax.swing.JComboBox<String> Web;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }

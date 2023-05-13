@@ -1,5 +1,6 @@
 package bbdd;
 
+import static bbdd.Conexion.conexion;
 import java.io.File;
 import java.io.FileWriter;
 import model.*;
@@ -15,13 +16,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 public class Scraper {
 
     public static ArrayList<Grafica> graficas = new ArrayList<>();
 
     // OBTENCION DE DATOS MEDIANTE SCRAPE
-    public void scrape() {
+    public static void scrape() throws SQLException {
         try {
 
             /*
@@ -91,11 +93,13 @@ public class Scraper {
                  num++;
                  */
                 guardarPrecio(grafica_id, grafica_nombre, grafica_precio);
+                insertGraficas(graficas);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        JOptionPane.showMessageDialog(null, "Scaneo Completado");
     }
 
     // VER CONTENIDO EN EL ARRAYLIST
@@ -208,7 +212,7 @@ public class Scraper {
     }
     // CARGA DE LOS DATOS EN LA BBDD
     public static void insertGraficas(List<Grafica> graficas) throws SQLException {
-
+        Conexion.conectar();
         for (Grafica grafica : graficas) {
             String id = grafica.getId();
             String sql = "SELECT id FROM graficas WHERE id = '" + id + "'";
@@ -232,7 +236,7 @@ public class Scraper {
 
     // UPDATE DE LOS DATOS EN LA BBDD
     public static void updateGraficas(List<Grafica> graficas) throws SQLException {
-
+        Conexion.conectar();
         for (Grafica grafica : graficas) {
             String id = grafica.getId();
             float precio = grafica.getPrecio();
@@ -241,6 +245,7 @@ public class Scraper {
 
             Conexion.ejecutarUpdate(sql);
         }
+        JOptionPane.showMessageDialog(null, "Actualización Completada");
 
     }
 
@@ -249,7 +254,7 @@ public class Scraper {
     public static void guardarPrecio(String id, String nombreGrafica, float precioAnterior) {
         try {
             // Crear el objeto File con la ruta y nombre del archivo
-            File file = new File("files/" + id + ".txt");
+            File file = new File("./src/files/"+ id + ".txt");
 
             // Crear el archivo si no existe
             if (!file.exists()) {
@@ -263,7 +268,7 @@ public class Scraper {
 
             // Escribir el precio anterior y la fecha en el archivo
             FileWriter writer = new FileWriter(file, true);
-            writer.write(nombreGrafica + "\n");
+            //writer.write(nombreGrafica + "\n");
             writer.write(fechaHora + "\t" + precioAnterior + "€\n");
             writer.close();
         } catch (IOException e) {
@@ -274,7 +279,7 @@ public class Scraper {
     
     public static List<String> leerHistorialPrecios(String idGrafica) throws IOException {
         List<String> historialPrecios = new ArrayList<>();
-        String nombreArchivo = "files/" + idGrafica + ".txt";
+        String nombreArchivo = "./src/files/" + idGrafica + ".txt";
         File archivo = new File(nombreArchivo);
         if (archivo.exists()) {
             try (Scanner scanner = new Scanner(archivo)) {
@@ -285,5 +290,13 @@ public class Scraper {
         }
         return historialPrecios;
     }
+
+    
+    
+    public static void mostrarDatos() {
+        Conexion.conectar();
+        String sql = "SELECT * FROM graficas";
+        Conexion.ejecutarUpdate(sql);
+}
 
 }

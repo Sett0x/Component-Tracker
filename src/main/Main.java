@@ -10,7 +10,7 @@ public class Main {
         try {
             Scraper scraper = new Scraper();
             scraper.scrape();
-            scraper.VerDatos();
+            //scraper.VerDatos();
             Scraper.insertGraficas(Scraper.graficas);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
