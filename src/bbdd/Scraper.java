@@ -1,5 +1,7 @@
 package bbdd;
 
+import java.io.File;
+import java.io.FileWriter;
 import model.*;
 import java.io.IOException;
 //import org.jsoup.Connection;
@@ -9,7 +11,10 @@ import org.jsoup.select.*;
 import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class Scraper {
 
@@ -85,6 +90,7 @@ public class Scraper {
                 
                  num++;
                  */
+                guardarPrecio(grafica_id, grafica_nombre, grafica_precio);
             }
 
         } catch (IOException e) {
@@ -196,7 +202,10 @@ public class Scraper {
         }
         return vram;
     }
-
+    
+    public ArrayList<Grafica> getGraficas() {
+        return graficas;
+    }
     // CARGA DE LOS DATOS EN LA BBDD
     public static void insertGraficas(List<Grafica> graficas) throws SQLException {
 
@@ -235,8 +244,46 @@ public class Scraper {
 
     }
 
-    public ArrayList<Grafica> getGraficas() {
-        return graficas;
+    
+
+    public static void guardarPrecio(String id, String nombreGrafica, float precioAnterior) {
+        try {
+            // Crear el objeto File con la ruta y nombre del archivo
+            File file = new File("files/" + id + ".txt");
+
+            // Crear el archivo si no existe
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            // Obtener la fecha y hora actual
+            Date fechaActual = new Date();
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            String fechaHora = formatoFecha.format(fechaActual);
+
+            // Escribir el precio anterior y la fecha en el archivo
+            FileWriter writer = new FileWriter(file, true);
+            writer.write(nombreGrafica + "\n");
+            writer.write(fechaHora + "\t" + precioAnterior + "€\n");
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
+    public static List<String> leerHistorialPrecios(String idGrafica) throws IOException {
+        List<String> historialPrecios = new ArrayList<>();
+        String nombreArchivo = "files/" + idGrafica + ".txt";
+        File archivo = new File(nombreArchivo);
+        if (archivo.exists()) {
+            try (Scanner scanner = new Scanner(archivo)) {
+                while (scanner.hasNextLine()) {
+                    historialPrecios.add(scanner.nextLine());
+                }
+            }
+        }
+        return historialPrecios;
     }
 
 }
