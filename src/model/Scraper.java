@@ -1,11 +1,9 @@
-package bbdd;
+package model;
 
-import static bbdd.Conexion.conexion;
+import bbdd.Conexion;
 import java.io.File;
 import java.io.FileWriter;
-import model.*;
 import java.io.IOException;
-//import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
 import org.jsoup.select.*;
@@ -268,7 +266,7 @@ public class Scraper {
 
             // Escribir el precio anterior y la fecha en el archivo
             FileWriter writer = new FileWriter(file, true);
-            //writer.write(nombreGrafica + "\n");
+            
             writer.write(fechaHora + "\t" + precioAnterior + "€\n");
             writer.close();
         } catch (IOException e) {

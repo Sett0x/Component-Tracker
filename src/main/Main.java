@@ -1,6 +1,10 @@
 package main;
-import java.sql.SQLException;
 import bbdd.*;
+import controller.*;
+import view.*;
+import model.*;
+import java.sql.SQLException;
+
 
 public class Main {
 

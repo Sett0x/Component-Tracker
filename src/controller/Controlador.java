@@ -1,6 +1,6 @@
 package controller;
-import bbdd.*;
-import static bbdd.Scraper.graficas;
+import model.*;
+import static model.Scraper.graficas;
 import java.sql.SQLException;
 public class Controlador {
     
