@@ -1,15 +1,30 @@
 package view;
+
 import controller.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class vista extends javax.swing.JFrame {
-    
-    
+
     public vista() {
         initComponents();
         setLocationRelativeTo(null);
+
+        // Crear la tabla
+        JTable tabla = new JTable();
+
+        // Obtener el modelo de la tabla del controlador
+        DefaultTableModel modelo = Controlador.obtenerDatosTabla();
+
+        // Establecer el modelo de la tabla
+        Tablebbdd.setModel(modelo);
+
+        // Agregar la tabla al panel de la vista
+        Table.add(new JScrollPane(tabla));
     }
 
     /**
@@ -121,7 +136,22 @@ public class vista extends javax.swing.JFrame {
             new String [] {
                 "ID", "NOMBRE", "VRAM", "MARCA", "FABRICANTE", "PRECIO"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         Table.setViewportView(Tablebbdd);
         if (Tablebbdd.getColumnModel().getColumnCount() > 0) {
             Tablebbdd.getColumnModel().getColumn(0).setMinWidth(60);
@@ -349,4 +379,5 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
+
 }

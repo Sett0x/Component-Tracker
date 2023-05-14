@@ -204,10 +204,11 @@ public class Scraper {
         }
         return vram;
     }
-    
+
     public ArrayList<Grafica> getGraficas() {
         return graficas;
     }
+
     // CARGA DE LOS DATOS EN LA BBDD
     public static void insertGraficas(List<Grafica> graficas) throws SQLException {
         Conexion.conectar();
@@ -247,12 +248,15 @@ public class Scraper {
 
     }
 
-    
-
     public static void guardarPrecio(String id, String nombreGrafica, float precioAnterior) {
         try {
-            // Crear el objeto File con la ruta y nombre del archivo
-            File file = new File("./src/files/"+ id + ".txt");
+            
+            // Crear la carpeta si no existe
+            File carpeta = new File("./src/graficas_registro_precios");
+            if (!carpeta.exists()) {
+                carpeta.mkdirs();
+            }
+            File file = new File("./src/graficas_registro_precios/" + id + ".txt");
 
             // Crear el archivo si no existe
             if (!file.exists()) {
@@ -266,7 +270,7 @@ public class Scraper {
 
             // Escribir el precio anterior y la fecha en el archivo
             FileWriter writer = new FileWriter(file, true);
-            
+
             writer.write(fechaHora + "\t" + precioAnterior + "€\n");
             writer.close();
         } catch (IOException e) {
@@ -274,10 +278,10 @@ public class Scraper {
         }
 
     }
-    
+
     public static List<String> leerHistorialPrecios(String idGrafica) throws IOException {
         List<String> historialPrecios = new ArrayList<>();
-        String nombreArchivo = "./src/files/" + idGrafica + ".txt";
+        String nombreArchivo = "./src/graficas_registro_precios/" + idGrafica + ".txt";
         File archivo = new File(nombreArchivo);
         if (archivo.exists()) {
             try (Scanner scanner = new Scanner(archivo)) {
@@ -289,12 +293,10 @@ public class Scraper {
         return historialPrecios;
     }
 
-    
-    
     public static void mostrarDatos() {
         Conexion.conectar();
         String sql = "SELECT * FROM graficas";
         Conexion.ejecutarUpdate(sql);
-}
+    }
 
 }
