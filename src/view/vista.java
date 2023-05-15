@@ -1,51 +1,56 @@
 package view;
 
-import bbdd.Conexion;
 import controller.*;
-import static controller.Controlador.Sentencia;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.JComboBox;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class vista extends javax.swing.JFrame {
 
     public vista() {
         initComponents();
         setLocationRelativeTo(null);
+        String sql = ("SELECT * FROM graficas");
+        cargarTabla(sql);
 
-        try{
+    }
+
+    public void cargarTabla(String sql) {
+        try {
             DefaultTableModel modelo = new DefaultTableModel();
             Tablebbdd.setModel(modelo);
-            
+
             Controlador.Conectar();
-            String sql = ("SELECT * FROM graficas");
-            
-            
+
             ResultSet rs = Controlador.Sentencia(sql);
             
             ResultSetMetaData rsMd = rs.getMetaData();
-            
+
             int columnas = rsMd.getColumnCount();
-            
+
             modelo.addColumn("ID");
             modelo.addColumn("NOMBRE");
             modelo.addColumn("VRAM");
             modelo.addColumn("MARCA");
             modelo.addColumn("FABRICANTE");
             modelo.addColumn("PRECIO");
-            
-            int [] anchos = {60, 450, 60, 80, 100, 80};
-            
-            for(int j = 0; j <columnas; j++){
+
+            int[] anchos = {60, 450, 60, 80, 100, 80};
+
+            for (int j = 0; j < columnas; j++) {
                 Tablebbdd.getColumnModel().getColumn(j).setPreferredWidth(anchos[j]);
             }
-            
-             // Agregar las filas al modelo
+
+            // Agregar las filas al modelo
             while (rs.next()) {
                 Object[] fila = new Object[columnas];
                 for (int i = 1; i <= columnas; i++) {
@@ -54,10 +59,10 @@ public class vista extends javax.swing.JFrame {
                 modelo.addRow(fila);
             }
             
-        } catch(SQLException ex){
+
+        } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
-        
         /*
         // Crear la tabla
         JTable tabla = new JTable();
@@ -70,7 +75,7 @@ public class vista extends javax.swing.JFrame {
 
         // Agregar la tabla al panel de la vista
         Table.add(new JScrollPane(tabla));
-        */
+         */
     }
 
     /**
@@ -198,11 +203,6 @@ public class vista extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        Tablebbdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                TablebbddMouseClicked(evt);
-            }
-        });
         Table.setViewportView(Tablebbdd);
         if (Tablebbdd.getColumnModel().getColumnCount() > 0) {
             Tablebbdd.getColumnModel().getColumn(0).setMinWidth(60);
@@ -240,16 +240,26 @@ public class vista extends javax.swing.JFrame {
             }
         });
 
-        Order_Marca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Order_Marca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asrock", "Asus", "Gigabyte", "MSI", "Palit", "PNY", "Zotac" }));
+        Order_Marca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Order_MarcaActionPerformed(evt);
+            }
+        });
 
-        Order_VRAM.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ordenar de mayor a menor", "Ordenar de menor a mayor" }));
+        Order_VRAM.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascendente", "Descendente" }));
         Order_VRAM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Order_VRAMActionPerformed(evt);
             }
         });
 
-        Order_Precio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ordenar de mayor a menor", "Ordenar de menor a mayor" }));
+        Order_Precio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ascendente", "Descendente" }));
+        Order_Precio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Order_PrecioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -257,7 +267,7 @@ public class vista extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(Order_VRAM, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Order_VRAM, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7)
                 .addComponent(Order_Marca, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -363,7 +373,22 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_ScanActionPerformed
 
     private void Order_VRAMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_VRAMActionPerformed
-        // TODO add your handling code here:
+        JComboBox comboBoxOrden = (JComboBox) evt.getSource();
+        String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
+        String sql = "";
+
+        switch (ordenSeleccionado) {
+            case "Ascendente":
+                sql = "SELECT * FROM graficas ORDER BY vram DESC";
+                break;
+            case "Descendente":
+                sql = "SELECT * FROM graficas ORDER BY vram ASC";
+                break;
+            default:
+                break;
+        }
+
+        cargarTabla(sql);
     }//GEN-LAST:event_Order_VRAMActionPerformed
 
     private void WebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WebActionPerformed
@@ -379,12 +404,76 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_UpdateActionPerformed
 
     private void Order_FabricanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_FabricanteActionPerformed
-        // TODO add your handling code here:
+        JComboBox comboBoxOrden = (JComboBox) evt.getSource();
+        String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
+        String sql = "";
+
+        switch (ordenSeleccionado) {
+            case "Nvidia":
+                sql = "SELECT * FROM graficas WHERE fabricante = 'Nvidia'";
+                break;
+            case "AMD":
+                sql = "SELECT * FROM graficas WHERE fabricante = 'AMD'";
+                break;
+            default:
+                break;
+        }
+
+        cargarTabla(sql);
     }//GEN-LAST:event_Order_FabricanteActionPerformed
 
-    private void TablebbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablebbddMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TablebbddMouseClicked
+    private void Order_PrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_PrecioActionPerformed
+        JComboBox comboBoxOrden = (JComboBox) evt.getSource();
+        String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
+        String sql = "";
+
+        switch (ordenSeleccionado) {
+            case "Ascendente":
+                sql = "SELECT * FROM graficas ORDER BY precio DESC";
+                break;
+            case "Descendente":
+                sql = "SELECT * FROM graficas ORDER BY precio ASC";
+                break;
+            default:
+                break;
+        }
+
+        cargarTabla(sql);
+    }//GEN-LAST:event_Order_PrecioActionPerformed
+
+    private void Order_MarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_MarcaActionPerformed
+         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
+        String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
+        String sql = "";
+
+        switch (ordenSeleccionado) {
+            case "Asrock":
+                sql = "SELECT * FROM graficas WHERE marca = 'ASROCK'";
+                break;
+            case "Asus":
+                sql = "SELECT * FROM graficas WHERE marca = 'ASUS'";
+                break;
+            case "Gigabyte":
+                sql = "SELECT * FROM graficas WHERE marca = 'GIGABYTE'";
+                break;
+            case "Msi":
+                sql = "SELECT * FROM graficas WHERE marca = 'MSI'";
+                break;
+            case "Palit":
+                sql = "SELECT * FROM graficas WHERE marca = 'PALIT'";
+                break;
+            case "PNY":
+                sql = "SELECT * FROM graficas WHERE marca = 'PNY'";
+                break;
+            case "Zotac":
+                sql = "SELECT * FROM graficas WHERE marca = 'ZOTAC'";
+                break;
+            default:
+                break;
+        }
+
+        cargarTabla(sql);
+    }//GEN-LAST:event_Order_MarcaActionPerformed
 
     /**
      * @param args the command line arguments

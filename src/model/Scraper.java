@@ -131,10 +131,7 @@ public class Scraper {
         //System.out.print("Marca / Ensamblador: ");
         if (grafica_nombre.toLowerCase().contains("asus")) {
             marca = "ASUS";
-
-        } else if (grafica_nombre.toLowerCase().contains("rog")) {
-            marca = "ROG";
-
+            
         } else if (grafica_nombre.toLowerCase().contains("msi")) {
             marca = "MSI";
 
@@ -146,9 +143,6 @@ public class Scraper {
 
         } else if (grafica_nombre.toLowerCase().contains("asrock")) {
             marca = "ASROCK";
-
-        } else if (grafica_nombre.toLowerCase().contains("evga")) {
-            marca = "EVGA";
 
         } else if (grafica_nombre.toLowerCase().contains("pny")) {
             marca = "PNY";
