@@ -32,7 +32,7 @@ public class vista extends javax.swing.JFrame {
             Controlador.Conectar();
 
             ResultSet rs = Controlador.Sentencia(sql);
-            
+
             ResultSetMetaData rsMd = rs.getMetaData();
 
             int columnas = rsMd.getColumnCount();
@@ -43,6 +43,8 @@ public class vista extends javax.swing.JFrame {
             modelo.addColumn("MARCA");
             modelo.addColumn("FABRICANTE");
             modelo.addColumn("PRECIO");
+            
+            
 
             int[] anchos = {60, 450, 60, 80, 100, 80};
 
@@ -58,6 +60,20 @@ public class vista extends javax.swing.JFrame {
                 }
                 modelo.addRow(fila);
             }
+
+            // Habilitar ordenamiento por columna en el header
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(modelo);
+            Tablebbdd.setRowSorter(sorter);
+
+            JTableHeader header = Tablebbdd.getTableHeader();
+            header.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    int columna = header.columnAtPoint(e.getPoint());
+                    sorter.toggleSortOrder(columna);
+                }
+            });
+            
             
 
         } catch (SQLException ex) {
@@ -203,6 +219,7 @@ public class vista extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        Tablebbdd.getTableHeader().setReorderingAllowed(false);
         Table.setViewportView(Tablebbdd);
         if (Tablebbdd.getColumnModel().getColumnCount() > 0) {
             Tablebbdd.getColumnModel().getColumn(0).setMinWidth(60);
@@ -442,7 +459,7 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_Order_PrecioActionPerformed
 
     private void Order_MarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_MarcaActionPerformed
-         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
+        JComboBox comboBoxOrden = (JComboBox) evt.getSource();
         String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
         String sql = "";
 
