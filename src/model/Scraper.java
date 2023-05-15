@@ -52,8 +52,8 @@ public class Scraper {
                 String grafica_nombre = element.select("a").text().trim().split("Tarjetas")[0].replace("™", "").replace("®", "");
 
                 String grafica_id = element.attr("data-id");
-
-                //int grafica_id = Integer.parseInt(id);
+                int id = Integer.parseInt(grafica_id);
+                
                 String precio = element.select(".vs-product-card-prices > span:first-child").text().trim().split(" ")[0].replace(".", "").replace(",", ".");
 
                 Float grafica_precio = Float.parseFloat(precio);
@@ -64,7 +64,7 @@ public class Scraper {
 
                 int grafica_vram = VRAM(grafica_nombre);
 
-                Grafica grafica = new Grafica(grafica_id, grafica_nombre, grafica_vram, grafica_marca, grafica_fabricante, grafica_precio);
+                Grafica grafica = new Grafica(id, grafica_nombre, grafica_vram, grafica_marca, grafica_fabricante, grafica_precio);
                 graficas.add(grafica);
 
                 /* 
@@ -131,7 +131,7 @@ public class Scraper {
         //System.out.print("Marca / Ensamblador: ");
         if (grafica_nombre.toLowerCase().contains("asus")) {
             marca = "ASUS";
-            
+
         } else if (grafica_nombre.toLowerCase().contains("msi")) {
             marca = "MSI";
 
@@ -207,7 +207,7 @@ public class Scraper {
     public static void insertGraficas(List<Grafica> graficas) throws SQLException {
         Conexion.conectar();
         for (Grafica grafica : graficas) {
-            String id = grafica.getId();
+            int id = grafica.getId();
             String sql = "SELECT id FROM graficas WHERE id = '" + id + "'";
             ResultSet rs = Conexion.ejecutarSentencia(sql);
 
@@ -231,7 +231,7 @@ public class Scraper {
     public static void updateGraficas(List<Grafica> graficas) throws SQLException {
         Conexion.conectar();
         for (Grafica grafica : graficas) {
-            String id = grafica.getId();
+            int id = grafica.getId();
             float precio = grafica.getPrecio();
 
             String sql = "UPDATE graficas SET precio = " + precio + " WHERE id = " + id;
@@ -244,7 +244,7 @@ public class Scraper {
 
     public static void guardarPrecio(String id, String nombreGrafica, float precioAnterior) {
         try {
-            
+
             // Crear la carpeta si no existe
             File carpeta = new File("./src/graficas_registro_precios");
             if (!carpeta.exists()) {

@@ -1,6 +1,7 @@
 package model;
 
 
+
 import controller.Controlador;
 import java.sql.ResultSet;
 import java.sql.SQLException;

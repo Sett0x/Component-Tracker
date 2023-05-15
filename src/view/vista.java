@@ -9,10 +9,12 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import model.Grafica;
 
 public class vista extends javax.swing.JFrame {
 
@@ -43,8 +45,6 @@ public class vista extends javax.swing.JFrame {
             modelo.addColumn("MARCA");
             modelo.addColumn("FABRICANTE");
             modelo.addColumn("PRECIO");
-            
-            
 
             int[] anchos = {60, 450, 60, 80, 100, 80};
 
@@ -73,8 +73,7 @@ public class vista extends javax.swing.JFrame {
                     sorter.toggleSortOrder(columna);
                 }
             });
-            */
-            
+             */
 
         } catch (SQLException ex) {
             System.err.println(ex.toString());
@@ -105,11 +104,11 @@ public class vista extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         Funciones = new javax.swing.JPanel();
-        Exit = new javax.swing.JButton();
-        Modificar = new javax.swing.JButton();
-        Eliminar = new javax.swing.JButton();
-        Guardar = new javax.swing.JButton();
-        Limpiar = new javax.swing.JButton();
+        btnExit = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         Table = new javax.swing.JScrollPane();
         Tablebbdd = new javax.swing.JTable();
@@ -126,8 +125,8 @@ public class vista extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         Component = new javax.swing.JComboBox<>();
-        Scan = new javax.swing.JButton();
-        Update = new javax.swing.JButton();
+        btnScan = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -141,56 +140,61 @@ public class vista extends javax.swing.JFrame {
         txtMarca = new javax.swing.JTextField();
         txtFabricante = new javax.swing.JTextField();
         txtPrecio = new javax.swing.JTextField();
-        Buscar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Component Tracker");
 
-        Exit.setText("Salir");
-        Exit.addActionListener(new java.awt.event.ActionListener() {
+        btnExit.setText("Salir");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitActionPerformed(evt);
+                btnExitActionPerformed(evt);
             }
         });
 
-        Modificar.setText("Modificar");
-        Modificar.addActionListener(new java.awt.event.ActionListener() {
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModificarActionPerformed(evt);
+                btnModificarActionPerformed(evt);
             }
         });
 
-        Eliminar.setText("Eliminar");
-        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EliminarActionPerformed(evt);
+                btnEliminarActionPerformed(evt);
             }
         });
 
-        Guardar.setText("Guardar");
-        Guardar.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GuardarActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
 
-        Limpiar.setText("Limpiar");
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout FuncionesLayout = new javax.swing.GroupLayout(Funciones);
         Funciones.setLayout(FuncionesLayout);
         FuncionesLayout.setHorizontalGroup(
             FuncionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FuncionesLayout.createSequentialGroup()
-                .addComponent(Guardar)
+                .addComponent(btnGuardar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Modificar)
+                .addComponent(btnModificar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Eliminar)
+                .addComponent(btnEliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Limpiar)
+                .addComponent(btnLimpiar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Exit)
+                .addComponent(btnExit)
                 .addContainerGap())
         );
         FuncionesLayout.setVerticalGroup(
@@ -198,11 +202,11 @@ public class vista extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, FuncionesLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(FuncionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Exit)
-                    .addComponent(Guardar)
-                    .addComponent(Modificar)
-                    .addComponent(Eliminar)
-                    .addComponent(Limpiar)))
+                    .addComponent(btnExit)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnModificar)
+                    .addComponent(btnEliminar)
+                    .addComponent(btnLimpiar)))
         );
 
         Tablebbdd.setModel(new javax.swing.table.DefaultTableModel(
@@ -385,17 +389,17 @@ public class vista extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        Scan.setText("Scan");
-        Scan.addActionListener(new java.awt.event.ActionListener() {
+        btnScan.setText("Scan");
+        btnScan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ScanActionPerformed(evt);
+                btnScanActionPerformed(evt);
             }
         });
 
-        Update.setText("Actualizar");
-        Update.addActionListener(new java.awt.event.ActionListener() {
+        btnUpdate.setText("Actualizar");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UpdateActionPerformed(evt);
+                btnUpdateActionPerformed(evt);
             }
         });
 
@@ -425,7 +429,12 @@ public class vista extends javax.swing.JFrame {
             }
         });
 
-        Buscar.setText("Buscar");
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -450,14 +459,14 @@ public class vista extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(Update, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(49, 49, 49)
-                                .addComponent(Buscar)
+                                .addComponent(btnBuscar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
-                                .addComponent(Scan, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(btnScan, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -488,7 +497,7 @@ public class vista extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(jLabel7)
                             .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Buscar))
+                            .addComponent(btnBuscar))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
@@ -498,9 +507,9 @@ public class vista extends javax.swing.JFrame {
                             .addComponent(jLabel9)
                             .addComponent(txtVram, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(Scan)
+                        .addComponent(btnScan)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Update)))
+                        .addComponent(btnUpdate)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -521,21 +530,19 @@ public class vista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         dispose();
-    }//GEN-LAST:event_ExitActionPerformed
+    }//GEN-LAST:event_btnExitActionPerformed
 
-    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_EliminarActionPerformed
-
-    private void ScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ScanActionPerformed
+    private void btnScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScanActionPerformed
         try {
             Controlador.Scan();
         } catch (SQLException ex) {
             Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_ScanActionPerformed
+        String sql = ("SELECT * FROM graficas");
+        cargarTabla(sql);
+    }//GEN-LAST:event_btnScanActionPerformed
 
     private void Order_VRAMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_VRAMActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
@@ -560,13 +567,13 @@ public class vista extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_WebActionPerformed
 
-    private void UpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateActionPerformed
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         try {
             Controlador.Update();
         } catch (SQLException ex) {
             Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_UpdateActionPerformed
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void Order_FabricanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_FabricanteActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
@@ -640,13 +647,9 @@ public class vista extends javax.swing.JFrame {
         cargarTabla(sql);
     }//GEN-LAST:event_Order_MarcaActionPerformed
 
-    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_GuardarActionPerformed
-
-    private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ModificarActionPerformed
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        //Controlador.modificar(item);
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
         // TODO add your handling code here:
@@ -655,6 +658,55 @@ public class vista extends javax.swing.JFrame {
     private void txtMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMarcaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMarcaActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        txtID.setText(null);
+        txtNombre.setText(null);
+        txtVram.setText(null);
+        txtMarca.setText(null);
+        txtFabricante.setText(null);
+        txtPrecio.setText(null);
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String id = txtID.getText();
+        String sql = "SELECT * FROM graficas WHERE id='" + id + "'";
+
+        try {
+            Controlador.Conectar();
+            ResultSet rs = Controlador.Sentencia(sql);
+
+            if (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String vram = rs.getString("vram");
+                String marca = rs.getString("marca");
+                String fabricante = rs.getString("fabricante");
+                String precio = rs.getString("precio");
+
+                // Rellenar campos de texto
+                txtNombre.setText(nombre);
+                txtVram.setText(vram);
+                txtMarca.setText(marca);
+                txtFabricante.setText(fabricante);
+                txtPrecio.setText(precio);
+            } else {
+                // No se encontró una gráfica con el ID especificado
+                JOptionPane.showMessageDialog(null, "No se encontró ninguna gráfica con el ID especificado.");
+            }
+        } catch (SQLException ex) {
+            // Error al ejecutar la consulta SQL
+            JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
+        }
+        cargarTabla(sql);
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        //Controlador.registrar(item);
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        //Controlador.eliminar(item);
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -692,25 +744,25 @@ public class vista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton Buscar;
     private javax.swing.JComboBox<String> Component;
-    public javax.swing.JButton Eliminar;
-    private javax.swing.JButton Exit;
     private javax.swing.JPanel Funciones;
-    public javax.swing.JButton Guardar;
     private javax.swing.JLabel Label_Componente;
     private javax.swing.JLabel Label_Web;
-    public javax.swing.JButton Limpiar;
-    public javax.swing.JButton Modificar;
     private javax.swing.JComboBox<String> Order_Fabricante;
     private javax.swing.JComboBox<String> Order_Marca;
     private javax.swing.JComboBox<String> Order_Precio;
     private javax.swing.JComboBox<String> Order_VRAM;
-    private javax.swing.JButton Scan;
     private javax.swing.JScrollPane Table;
     private javax.swing.JTable Tablebbdd;
-    private javax.swing.JButton Update;
     private javax.swing.JComboBox<String> Web;
+    public javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnExit;
+    public javax.swing.JButton btnGuardar;
+    public javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnScan;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

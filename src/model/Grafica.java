@@ -2,14 +2,14 @@ package model;
 
 // OBJETO GRAFICA
 public class Grafica {
-    public String id;
+    public int id;
     public String nombre;
     public int vram;
     public String marca;
     public String fabricante;
     public float precio;
 
-    public Grafica(String id, String nombre, int vram, String marca, String fabricante, float precio) {
+    public Grafica(int id, String nombre, int vram, String marca, String fabricante, float precio) {
         this.id = id;
         this.nombre = nombre;
         this.vram = vram;
@@ -18,11 +18,11 @@ public class Grafica {
         this.precio = precio;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

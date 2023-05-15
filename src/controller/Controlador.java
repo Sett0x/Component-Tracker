@@ -4,13 +4,11 @@ package controller;
 import java.sql.*;
 import model.*;
 import bbdd.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import static model.Scraper.graficas;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
-public class Controlador implements ActionListener{
+public class Controlador {
 
     public static void Conectar() throws SQLException {
         Conexion.conectar();
@@ -31,9 +29,44 @@ public class Controlador implements ActionListener{
     public static void Update() throws SQLException {
         Scraper.updateGraficas(graficas);
     }
+    
+    public static void registrar(Grafica item) throws SQLException {
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Conectar();
+
+        String sql = "INSERT INTO graficas (id, nombre, vram, marca, fabricante, precio) VALUES (?, ?, ?, ?, ?, ?)";
+        
+        Sentencia(sql);
     }
+    
+    public static void modificar(Grafica item) throws SQLException {
+
+        Conectar();
+
+        String sql = "UPDATE graficas SET nombre=? vram=? marca=? fabricante=? precio=? WHERE id=?";
+
+        Controlador.CUpate(sql);
+    }
+
+    public static void eliminar(Grafica item) throws SQLException {
+
+        Conectar();
+
+        String sql = "DELETE FROM graficas WHERE id=?";
+
+        Sentencia(sql);
+    }
+    
+    public static String buscar(String id) throws SQLException {
+
+        Conectar();
+
+        String sql = "SELECT * FROM graficas WHERE id='id'";
+        
+        
+        return sql;
+        
+    }
+    
+    
 }
