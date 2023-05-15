@@ -648,7 +648,22 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_Order_MarcaActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        //Controlador.modificar(item);
+        int id = Integer.parseInt(txtID.getText());
+        String nombre = txtNombre.getText();
+        int vram = Integer.parseInt(txtVram.getText());
+        String marca = txtMarca.getText();
+        String fabricante = txtFabricante.getText();
+        double precio = Double.parseDouble(txtPrecio.getText());
+
+        Grafica graficaModificada = new Grafica(id, nombre, vram, marca, fabricante, precio);
+        
+        try {
+        Controlador.modificarGrafica(graficaModificada.getId(), graficaModificada.getNombre(), graficaModificada.getVram(), graficaModificada.getMarca(), graficaModificada.getFabricante(), graficaModificada.getPrecio());
+
+        JOptionPane.showMessageDialog(null, "Gráfica actualizada correctamente.");
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al actualizar la gráfica: " + ex.getMessage());
+    }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed

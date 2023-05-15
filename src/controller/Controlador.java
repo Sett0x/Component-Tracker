@@ -5,6 +5,8 @@ import model.*;
 import bbdd.*;
 import static model.Scraper.graficas;
 import java.sql.SQLException;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Controlador {
@@ -73,4 +75,22 @@ public class Controlador {
         }
     }
 
+    public static void modificarGrafica(int id, String nombre, int vram, String marca, String fabricante, double precio) throws SQLException {
+        Conectar();
+        Grafica grafica = buscarGraficaPorId(id);
+        if (grafica != null) {
+            String sql = "UPDATE graficas SET nombre = ?, vram = ?, marca = ?, fabricante = ?, precio = ? WHERE id = ?";
+            PreparedStatement stmt = Conexion.preparedStatement(sql);
+            stmt.setString(1, nombre);
+            stmt.setInt(2, vram);
+            stmt.setString(3, marca);
+            stmt.setString(4, fabricante);
+            stmt.setDouble(5, precio);
+            stmt.setInt(6, id);
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Gráfica modificada correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró una gráfica con el ID proporcionado.");
+        }
+    }
 }

@@ -51,6 +51,17 @@ public class Conexion {
         }
     }
 
+    public static PreparedStatement preparedStatement(String sql) {
+        PreparedStatement stmt = null;
+        try {
+            stmt = conexion.prepareStatement(sql);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            e.printStackTrace();
+        }
+        return stmt;
+    }
+
     public static void cerrar() {
         try {
             consulta.close();
