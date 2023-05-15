@@ -1,6 +1,5 @@
 package controller;
 
-
 import java.sql.*;
 import model.*;
 import bbdd.*;
@@ -17,7 +16,7 @@ public class Controlador {
     public static ResultSet Sentencia(String sent) throws SQLException {
         return Conexion.ejecutarSentencia(sent);
     }
-    
+
     public static void CUpate(String sent) throws SQLException {
         Conexion.ejecutarUpdate(sent);
     }
@@ -29,16 +28,16 @@ public class Controlador {
     public static void Update() throws SQLException {
         Scraper.updateGraficas(graficas);
     }
-    
+
     public static void registrar(Grafica item) throws SQLException {
 
         Conectar();
 
         String sql = "INSERT INTO graficas (id, nombre, vram, marca, fabricante, precio) VALUES (?, ?, ?, ?, ?, ?)";
-        
+
         Sentencia(sql);
     }
-    
+
     public static void modificar(Grafica item) throws SQLException {
 
         Conectar();
@@ -56,17 +55,22 @@ public class Controlador {
 
         Sentencia(sql);
     }
-    
-    public static String buscar(String id) throws SQLException {
 
-        Conectar();
+    public static Grafica buscarGraficaPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM graficas WHERE id = " + id;
+        ResultSet rs = Sentencia(sql);
 
-        String sql = "SELECT * FROM graficas WHERE id='id'";
-        
-        
-        return sql;
-        
+        if (rs.next()) {
+            String nombre = rs.getString("nombre");
+            int vram = rs.getInt("vram");
+            String marca = rs.getString("marca");
+            String fabricante = rs.getString("fabricante");
+            double precio = rs.getDouble("precio");
+
+            return new Grafica(id, nombre, vram, marca, fabricante, precio);
+        } else {
+            return null; // No se encontró una gráfica con ese ID
+        }
     }
-    
-    
+
 }

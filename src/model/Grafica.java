@@ -7,9 +7,9 @@ public class Grafica {
     public int vram;
     public String marca;
     public String fabricante;
-    public float precio;
+    public double precio;
 
-    public Grafica(int id, String nombre, int vram, String marca, String fabricante, float precio) {
+    public Grafica(int id, String nombre, int vram, String marca, String fabricante, double precio) {
         this.id = id;
         this.nombre = nombre;
         this.vram = vram;
@@ -58,11 +58,11 @@ public class Grafica {
         this.fabricante = fabricante;
     }
 
-    public float getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 

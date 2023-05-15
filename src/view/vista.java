@@ -669,32 +669,25 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String id = txtID.getText();
+        String idString = txtID.getText();
+        int id = idString.isEmpty() ? 0 : Integer.parseInt(idString);
+
         String sql = "SELECT * FROM graficas WHERE id='" + id + "'";
 
         try {
-            Controlador.Conectar();
-            ResultSet rs = Controlador.Sentencia(sql);
-
-            if (rs.next()) {
-                String nombre = rs.getString("nombre");
-                String vram = rs.getString("vram");
-                String marca = rs.getString("marca");
-                String fabricante = rs.getString("fabricante");
-                String precio = rs.getString("precio");
-
-                // Rellenar campos de texto
-                txtNombre.setText(nombre);
-                txtVram.setText(vram);
-                txtMarca.setText(marca);
-                txtFabricante.setText(fabricante);
-                txtPrecio.setText(precio);
+            Grafica g = Controlador.buscarGraficaPorId(id);
+            if (g != null) {
+                txtNombre.setText(g.getNombre());
+                txtVram.setText(String.valueOf(g.getVram()));
+                txtMarca.setText(g.getMarca());
+                txtFabricante.setText(g.getFabricante());
+                txtPrecio.setText(String.valueOf(g.getPrecio()));
             } else {
-                // No se encontró una gráfica con el ID especificado
                 JOptionPane.showMessageDialog(null, "No se encontró ninguna gráfica con el ID especificado.");
+                sql = ("SELECT * FROM graficas");
+                cargarTabla(sql);
             }
         } catch (SQLException ex) {
-            // Error al ejecutar la consulta SQL
             JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
         }
         cargarTabla(sql);

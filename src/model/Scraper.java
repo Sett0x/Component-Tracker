@@ -56,7 +56,7 @@ public class Scraper {
                 
                 String precio = element.select(".vs-product-card-prices > span:first-child").text().trim().split(" ")[0].replace(".", "").replace(",", ".");
 
-                Float grafica_precio = Float.parseFloat(precio);
+                double grafica_precio = Double.parseDouble(precio);
 
                 String grafica_fabricante = Fabricante(grafica_nombre);
 
@@ -232,7 +232,7 @@ public class Scraper {
         Conexion.conectar();
         for (Grafica grafica : graficas) {
             int id = grafica.getId();
-            float precio = grafica.getPrecio();
+            double precio = grafica.getPrecio();
 
             String sql = "UPDATE graficas SET precio = " + precio + " WHERE id = " + id;
 
@@ -242,7 +242,7 @@ public class Scraper {
 
     }
 
-    public static void guardarPrecio(String id, String nombreGrafica, float precioAnterior) {
+    public static void guardarPrecio(String id, String nombreGrafica, double precioAnterior) {
         try {
 
             // Crear la carpeta si no existe
