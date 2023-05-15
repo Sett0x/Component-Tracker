@@ -1,16 +1,17 @@
 package main;
+
 import bbdd.*;
 import controller.*;
 import view.*;
 import model.*;
 import java.sql.SQLException;
 
-
 public class Main {
 
     public static void main(String[] args) {
 
         Conexion.conectar();
+
         try {
             Scraper scraper = new Scraper();
             scraper.scrape();
@@ -20,6 +21,9 @@ public class Main {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        // Mostrar la vista principal
+        vista miVista = new vista();
+        miVista.setVisible(true);
     }
-    
+
 }

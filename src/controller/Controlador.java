@@ -30,7 +30,7 @@ public class Controlador {
             // Agregar las columnas al modelo
             int columnas = rsMd.getColumnCount();
             for (int i = 1; i <= columnas; i++) {
-                modelo.addColumn(rsMd.getColumnName(i));
+                modelo.addColumn(rsMd.getColumnName(i).toUpperCase());
             }
 
             // Agregar las filas al modelo
