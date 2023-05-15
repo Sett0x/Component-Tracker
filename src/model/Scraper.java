@@ -221,7 +221,7 @@ public class Scraper {
                         + grafica.getFabricante() + "\", "
                         + grafica.getPrecio()
                         + ")";
-                Conexion.ejecutarSentencia(sql);
+                Conexion.ejecutarUpdate(sql);
             }
         }
 
