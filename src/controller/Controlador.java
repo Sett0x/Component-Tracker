@@ -17,7 +17,7 @@ public class Controlador {
     public static ResultSet Sentencia(String sent) throws SQLException {
         return Conexion.ejecutarSentencia(sent);
     }
-
+/*
     public static DefaultTableModel obtenerDatosTabla() {
         try {
             Conectar();
@@ -50,7 +50,7 @@ public class Controlador {
         }
         return null;
     }
-
+*/
     public static void Scan() throws SQLException {
         Scraper.scrape();
     }

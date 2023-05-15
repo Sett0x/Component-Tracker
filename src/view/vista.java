@@ -1,6 +1,10 @@
 package view;
 
+import bbdd.Conexion;
 import controller.*;
+import static controller.Controlador.Sentencia;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +18,47 @@ public class vista extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
 
+        try{
+            DefaultTableModel modelo = new DefaultTableModel();
+            Tablebbdd.setModel(modelo);
+            
+            Controlador.Conectar();
+            String sql = ("SELECT * FROM graficas");
+            
+            
+            ResultSet rs = Controlador.Sentencia(sql);
+            
+            ResultSetMetaData rsMd = rs.getMetaData();
+            
+            int columnas = rsMd.getColumnCount();
+            
+            modelo.addColumn("ID");
+            modelo.addColumn("NOMBRE");
+            modelo.addColumn("VRAM");
+            modelo.addColumn("MARCA");
+            modelo.addColumn("FABRICANTE");
+            modelo.addColumn("PRECIO");
+            
+            int [] anchos = {60, 450, 60, 80, 100, 80};
+            
+            for(int j = 0; j <columnas; j++){
+                Tablebbdd.getColumnModel().getColumn(j).setPreferredWidth(anchos[j]);
+            }
+            
+             // Agregar las filas al modelo
+            while (rs.next()) {
+                Object[] fila = new Object[columnas];
+                for (int i = 1; i <= columnas; i++) {
+                    fila[i - 1] = rs.getObject(i);
+                }
+                modelo.addRow(fila);
+            }
+            
+        } catch(SQLException ex){
+            System.err.println(ex.toString());
+        }
+        
+        /*
         // Crear la tabla
         JTable tabla = new JTable();
 
@@ -25,6 +70,7 @@ public class vista extends javax.swing.JFrame {
 
         // Agregar la tabla al panel de la vista
         Table.add(new JScrollPane(tabla));
+        */
     }
 
     /**
@@ -152,6 +198,11 @@ public class vista extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        Tablebbdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablebbddMouseClicked(evt);
+            }
+        });
         Table.setViewportView(Tablebbdd);
         if (Tablebbdd.getColumnModel().getColumnCount() > 0) {
             Tablebbdd.getColumnModel().getColumn(0).setMinWidth(60);
@@ -183,6 +234,11 @@ public class vista extends javax.swing.JFrame {
         Label_Componente.setText("Componente");
 
         Order_Fabricante.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nvidia", "AMD" }));
+        Order_Fabricante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Order_FabricanteActionPerformed(evt);
+            }
+        });
 
         Order_Marca.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -321,6 +377,14 @@ public class vista extends javax.swing.JFrame {
             Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_UpdateActionPerformed
+
+    private void Order_FabricanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_FabricanteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Order_FabricanteActionPerformed
+
+    private void TablebbddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablebbddMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TablebbddMouseClicked
 
     /**
      * @param args the command line arguments
