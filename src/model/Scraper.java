@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
+
 
 public class Scraper {
 
@@ -53,7 +55,7 @@ public class Scraper {
 
                 String grafica_id = element.attr("data-id");
                 int id = Integer.parseInt(grafica_id);
-                
+
                 String precio = element.select(".vs-product-card-prices > span:first-child").text().trim().split(" ")[0].replace(".", "").replace(",", ".");
 
                 double grafica_precio = Double.parseDouble(precio);
@@ -230,16 +232,20 @@ public class Scraper {
     // UPDATE DE LOS DATOS EN LA BBDD
     public static void updateGraficas(List<Grafica> graficas) throws SQLException {
         Conexion.conectar();
+        String sql = "UPDATE graficas SET precio = ? WHERE id = ?";
+        PreparedStatement statement = Conexion.preparedStatement(sql);
+
         for (Grafica grafica : graficas) {
             int id = grafica.getId();
             double precio = grafica.getPrecio();
 
-            String sql = "UPDATE graficas SET precio = " + precio + " WHERE id = " + id;
-
-            Conexion.ejecutarUpdate(sql);
+            statement.setDouble(1, precio);
+            statement.setInt(2, id);
+            statement.executeUpdate();
         }
-        JOptionPane.showMessageDialog(null, "Actualización Completada");
 
+        statement.close();
+        JOptionPane.showMessageDialog(null, "Actualización Completada");
     }
 
     public static void guardarPrecio(String id, String nombreGrafica, double precioAnterior) {
@@ -271,18 +277,18 @@ public class Scraper {
 
     }
 
-    public static List<String> leerHistorialPrecios(int idGrafica) throws IOException {
-        List<String> historialPrecios = new ArrayList<>();
+    public static String leerHistorialPrecios(int idGrafica) throws IOException {
+        StringBuilder historialPrecios = new StringBuilder();
         String nombreArchivo = "./src/graficas_registro_precios/" + idGrafica + ".txt";
         File archivo = new File(nombreArchivo);
         if (archivo.exists()) {
             try (Scanner scanner = new Scanner(archivo)) {
                 while (scanner.hasNextLine()) {
-                    historialPrecios.add(scanner.nextLine());
+                    historialPrecios.append(scanner.nextLine()).append("\n");
                 }
             }
         }
-        return historialPrecios;
+        return historialPrecios.toString();
     }
 
     public static void mostrarDatos() {

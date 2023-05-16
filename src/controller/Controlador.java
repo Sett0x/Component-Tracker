@@ -103,8 +103,9 @@ public class Controlador {
         }
     }
 
-    public static List<String> obtenerHistorialPrecios(int idGrafica) throws IOException {
-        return leerHistorialPrecios(idGrafica);
-    }
+    public static String obtenerHistorialPrecios(int idGrafica) throws IOException {
+    return leerHistorialPrecios(idGrafica);
+}
+
 
 }

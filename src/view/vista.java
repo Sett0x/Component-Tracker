@@ -2,9 +2,11 @@ package view;
 
 import controller.*;
 import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
@@ -59,8 +61,9 @@ public class vista extends javax.swing.JFrame {
                 modelo.addRow(fila);
             }
 
-            // Agregar el listener para capturar la selección de la tabla
+            // Agregar listener para capturar la selección de la tabla
             Tablebbdd.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+                @Override
                 public void valueChanged(ListSelectionEvent event) {
                     // Obtener la fila seleccionada
                     int filaSeleccionada = Tablebbdd.getSelectedRow();
@@ -71,8 +74,14 @@ public class vista extends javax.swing.JFrame {
                         txtMarca.setText(Tablebbdd.getValueAt(filaSeleccionada, 3).toString());
                         txtFabricante.setText(Tablebbdd.getValueAt(filaSeleccionada, 4).toString());
                         txtPrecio.setText(Tablebbdd.getValueAt(filaSeleccionada, 5).toString());
-                    }
 
+                        // Mostrar el historial de precios
+                        try {
+                            historialPrecioViewer();
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(null, "Error al cargar el historial de precios.");
+                        }
+                    }
                 }
             });
             /*
@@ -106,6 +115,13 @@ public class vista extends javax.swing.JFrame {
         // Agregar la tabla al panel de la vista
         Table.add(new JScrollPane(tabla));
          */
+    }
+
+    public void historialPrecioViewer() throws IOException {
+        String idString = txtID.getText();
+        int id = idString.isEmpty() ? 0 : Integer.parseInt(idString);
+        String text = Controlador.obtenerHistorialPrecios(id);
+        txtHistorialPrecios.setText(text);
     }
 
     public void limpiar() {
@@ -711,7 +727,7 @@ public class vista extends javax.swing.JFrame {
             case "Gigabyte":
                 sql = "SELECT * FROM graficas WHERE marca = 'GIGABYTE'";
                 break;
-            case "Msi":
+            case "MSI":
                 sql = "SELECT * FROM graficas WHERE marca = 'MSI'";
                 break;
             case "Palit":
