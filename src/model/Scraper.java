@@ -70,6 +70,7 @@ public class Scraper {
                 graficas.add(grafica);
 
                 /* 
+                // IMPRESION AUXILIAR PARA COMPROBAR FUNCIONAMIENTO
                  System.out.print("Gráfica "+ num+ ": "); 
                  System.out.print("ID: "+ grafica_id);
                  System.out.print(" | ");
@@ -248,7 +249,8 @@ public class Scraper {
         statement.close();
         JOptionPane.showMessageDialog(null, "Actualización Completada");
     }
-
+    
+    // REGISTRO DE PRECIOS ANTERIORES EN TXT
     public static void guardarPrecio(String id, String nombreGrafica, double precioAnterior) {
         try {
 
@@ -277,7 +279,8 @@ public class Scraper {
         }
 
     }
-
+    
+    // LECTURA DE PRECIOS ANTERIORES EN TXT
     public static String leerHistorialPrecios(int idGrafica) throws IOException {
         StringBuilder historialPrecios = new StringBuilder();
         String nombreArchivo = "./src/graficas_registro_precios/" + idGrafica + ".txt";
@@ -291,7 +294,8 @@ public class Scraper {
         }
         return historialPrecios.toString();
     }
-
+    
+    // FUNCION AUXILIAR
     public static void mostrarDatos() {
         Conexion.conectar();
         String sql = "SELECT * FROM graficas";

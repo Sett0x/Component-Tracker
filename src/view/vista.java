@@ -21,11 +21,14 @@ public class vista extends javax.swing.JFrame {
     public vista() {
         initComponents();
         setLocationRelativeTo(null);
+        // DEFAULT QUERY PARA CARGA DE BBDD
         String sql = ("SELECT * FROM graficas");
+        // CARGA DEFAULT DE LA TABLA
         cargarTabla(sql);
 
     }
-
+    
+    // TABLA CON CONTENIDO DE LA BBDD
     public void cargarTabla(String sql) {
         try {
             DefaultTableModel modelo = new DefaultTableModel();
@@ -61,7 +64,7 @@ public class vista extends javax.swing.JFrame {
                 modelo.addRow(fila);
             }
 
-            // Agregar listener para capturar la selección de la tabla
+            // LISTENER PARA CAPTURAR SELECCION DE LA TABLA
             Tablebbdd.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent event) {
@@ -85,7 +88,8 @@ public class vista extends javax.swing.JFrame {
                 }
             });
             /*
-            // Habilitar ordenamiento por columna en el header
+            // ORDENAMIENTO NO FUNCIONA CORRECTAMENTE, NO ORDENA DE MANERA APROPIADA
+            
             TableRowSorter<TableModel> sorter = new TableRowSorter<>(modelo);
             Tablebbdd.setRowSorter(sorter);
 
@@ -116,14 +120,14 @@ public class vista extends javax.swing.JFrame {
         Table.add(new JScrollPane(tabla));
          */
     }
-
+    // LLAMAMIENTO A LA FUNCION DE HISTORIAL DE PRECIOS
     public void historialPrecioViewer() throws IOException {
         String idString = txtID.getText();
         int id = idString.isEmpty() ? 0 : Integer.parseInt(idString);
         String text = Controlador.obtenerHistorialPrecios(id);
         txtHistorialPrecios.setText(text);
     }
-
+    // FUNCION PARA LIMPIAR LOS CAMPOS DE TEXTO
     public void limpiar() {
         txtID.setText(null);
         txtNombre.setText(null);
@@ -131,6 +135,7 @@ public class vista extends javax.swing.JFrame {
         txtMarca.setText(null);
         txtFabricante.setText(null);
         txtPrecio.setText(null);
+        txtHistorialPrecios.setText(null);
     }
 
     /**
@@ -596,7 +601,7 @@ public class vista extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    //BOTON DE SALIR DEL PROGRAMA
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
         String[] mensajesDespedida = {"¡Con Dios!", "La mineria ya no renta, estando como está la luz...",
             "Que no te engañen en el black friday ese.", "La gráfica que quieres no va a bajar...",
@@ -605,7 +610,7 @@ public class vista extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, mensajesDespedida[indiceMensaje]);
         dispose();
     }//GEN-LAST:event_btnExitActionPerformed
-
+    // BOTON LLAMAMIENTO A LA FUNCION SCAN PARA HACER EL SCRAPE
     private void btnScanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnScanActionPerformed
         try {
             Controlador.Scan();
@@ -661,11 +666,11 @@ public class vista extends javax.swing.JFrame {
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_VRAMActionPerformed
-
+    
     private void WebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WebActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_WebActionPerformed
-
+    // BOTON LLAMAMIENTO A LA FUNCION UPDATE PARA ACTUALIZAR PRECIOS GRAFICAS
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         try {
             Controlador.Update();
@@ -751,7 +756,8 @@ public class vista extends javax.swing.JFrame {
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_MarcaActionPerformed
-
+    
+    // BOTON LLAMAMIENTO A LA FUNCION MODIFICAR PARA EDITAR LA GRAFICA EN LA BBDD
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         int id = Integer.parseInt(txtID.getText());
         String nombre = txtNombre.getText();

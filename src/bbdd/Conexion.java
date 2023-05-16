@@ -50,7 +50,8 @@ public class Conexion {
             System.out.println("Error: " + sentencia);
         }
     }
-
+    
+    // FUNCION STATEMENT PARA CARGA DE DATOS
     public static PreparedStatement preparedStatement(String sql) {
         PreparedStatement stmt = null;
         try {
