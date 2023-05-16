@@ -1,6 +1,7 @@
 package view;
 
 import controller.*;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -820,8 +821,13 @@ public class vista extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         int id = Integer.parseInt(txtID.getText());
         try {
-            Controlador.eliminarGrafica(id);
+            int opcion = JOptionPane.showConfirmDialog(null, "¿Desea borrar también el registro de precios correspondiente?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                File archivo = new File("src/graficas_registro_precios/" + id + ".txt");
+                archivo.delete();
+            }
 
+            Controlador.eliminarGrafica(id);
             limpiar();
             String sql = ("SELECT * FROM graficas");
             cargarTabla(sql);
@@ -834,6 +840,21 @@ public class vista extends javax.swing.JFrame {
         String sql = ("DELETE FROM graficas");
         try {
             Controlador.CUpate(sql);
+            int opcion = JOptionPane.showConfirmDialog(null, "¿Desea borrar también el historial de precios?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                File carpeta = new File("src/graficas_registro_precios");
+                File[] archivos = carpeta.listFiles();
+                if (archivos != null) {
+                    for (File archivo : archivos) {
+                        archivo.delete();
+                    }
+                }
+                if (carpeta.delete()) {
+                    JOptionPane.showMessageDialog(null, "Historial de precios borrado correctamente.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo borrar la carpeta.");
+                }
+            }
             JOptionPane.showMessageDialog(null, "BBDD borrada correctamente.");
             limpiar();
             sql = ("SELECT * FROM graficas");
