@@ -3,11 +3,13 @@ package controller;
 import java.sql.*;
 import model.*;
 import bbdd.*;
+import java.io.IOException;
 import static model.Scraper.graficas;
 import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static model.Scraper.*;
 
 public class Controlador {
 
@@ -31,33 +33,6 @@ public class Controlador {
         Scraper.updateGraficas(graficas);
     }
 
-    public static void registrar(Grafica item) throws SQLException {
-
-        Conectar();
-
-        String sql = "INSERT INTO graficas (id, nombre, vram, marca, fabricante, precio) VALUES (?, ?, ?, ?, ?, ?)";
-
-        Sentencia(sql);
-    }
-
-    public static void modificar(Grafica item) throws SQLException {
-
-        Conectar();
-
-        String sql = "UPDATE graficas SET nombre=? vram=? marca=? fabricante=? precio=? WHERE id=?";
-
-        Controlador.CUpate(sql);
-    }
-
-    public static void eliminar(Grafica item) throws SQLException {
-
-        Conectar();
-
-        String sql = "DELETE FROM graficas WHERE id=?";
-
-        Sentencia(sql);
-    }
-
     public static Grafica buscarGraficaPorId(int id) throws SQLException {
         String sql = "SELECT * FROM graficas WHERE id = " + id;
         ResultSet rs = Sentencia(sql);
@@ -71,8 +46,28 @@ public class Controlador {
 
             return new Grafica(id, nombre, vram, marca, fabricante, precio);
         } else {
+            JOptionPane.showMessageDialog(null, "No se encontró ninguna gráfica con el ID especificado.");
             return null; // No se encontró una gráfica con ese ID
         }
+    }
+
+    public static void insertarGrafica(int id, String nombre, int vram, String marca, String fabricante, double precio) throws SQLException {
+        try {
+            Conectar();
+            String sql = "INSERT INTO graficas (id, nombre, vram, marca, fabricante, precio) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement stmt = Conexion.preparedStatement(sql);
+            stmt.setInt(1, id);
+            stmt.setString(2, nombre);
+            stmt.setInt(3, vram);
+            stmt.setString(4, marca);
+            stmt.setString(5, fabricante);
+            stmt.setDouble(6, precio);
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Gráfica modificada correctamente.");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al insertar la gráfica: " + ex.getMessage());
+        }
+
     }
 
     public static void modificarGrafica(int id, String nombre, int vram, String marca, String fabricante, double precio) throws SQLException {
@@ -93,4 +88,23 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, "No se encontró una gráfica con el ID proporcionado.");
         }
     }
+
+    public static void eliminarGrafica(int id) throws SQLException {
+        Conectar();
+        Grafica grafica = buscarGraficaPorId(id);
+        if (grafica != null) {
+            String sql = "DELETE FROM graficas WHERE id = ?";
+            PreparedStatement stmt = Conexion.preparedStatement(sql);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Gráfica eliminada correctamente.");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró una gráfica con el ID proporcionado.");
+        }
+    }
+
+    public static List<String> obtenerHistorialPrecios(int idGrafica) throws IOException {
+        return leerHistorialPrecios(idGrafica);
+    }
+
 }

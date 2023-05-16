@@ -262,18 +262,16 @@ public class Scraper {
             SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             String fechaHora = formatoFecha.format(fechaActual);
 
-            // Escribir el precio anterior y la fecha en el archivo
-            FileWriter writer = new FileWriter(file, true);
-
-            writer.write(fechaHora + "\t" + precioAnterior + "€\n");
-            writer.close();
+            try ( // Escribir el precio anterior y la fecha en el archivo
+                    FileWriter writer = new FileWriter(file, true)) {
+                writer.write(fechaHora + "\t" + precioAnterior + "€\n");
+            }
         } catch (IOException e) {
-            e.printStackTrace();
         }
 
     }
 
-    public static List<String> leerHistorialPrecios(String idGrafica) throws IOException {
+    public static List<String> leerHistorialPrecios(int idGrafica) throws IOException {
         List<String> historialPrecios = new ArrayList<>();
         String nombreArchivo = "./src/graficas_registro_precios/" + idGrafica + ".txt";
         File archivo = new File(nombreArchivo);
