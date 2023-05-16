@@ -828,41 +828,88 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        int id = Integer.parseInt(txtID.getText());
+        String idString = txtID.getText();
         String nombre = txtNombre.getText();
-        int vram = Integer.parseInt(txtVram.getText());
+        String vramString = txtVram.getText();
         String marca = txtMarca.getText();
         String fabricante = txtFabricante.getText();
-        double precio = Double.parseDouble(txtPrecio.getText());
+        String precioString = txtPrecio.getText();
+
+        // Validar que idString sea un valor numérico
+        if (!idString.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "El ID debe ser un valor numérico");
+            return;
+        }
+
+        // Validar que vramString sea un valor numérico
+        if (!vramString.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "VRAM debe ser un valor numérico");
+            return;
+        }
+
+        // Validar que precioString sea un valor numérico
+        if (!precioString.matches("\\d+(\\.\\d+)?")) {
+            JOptionPane.showMessageDialog(null, "El precio debe ser un valor numérico");
+            return;
+        }
+
+        // Validar que nombre contenga solo letras, números, guiones y espacios
+        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s\\d-]+")) {
+            JOptionPane.showMessageDialog(null, "El nombre solo puede contener letras, números, guiones y espacios");
+            return;
+        }
+
+        // Validar que marca contenga solo letras y caracteres permitidos
+        if (!marca.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
+            JOptionPane.showMessageDialog(null, "La marca solo puede contener letras y espacios");
+            return;
+        }
+
+        // Validar que fabricante contenga solo letras y caracteres permitidos
+        if (!fabricante.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
+            JOptionPane.showMessageDialog(null, "El fabricante solo puede contener letras y espacios");
+            return;
+        }
+
+        int id = Integer.parseInt(idString);
+        int vram = Integer.parseInt(vramString);
+        double precio = Double.parseDouble(precioString);
 
         Grafica graficaNueva = new Grafica(id, nombre, vram, marca, fabricante, precio);
 
         try {
-            Controlador.insertarGrafica(graficaNueva.getId(), graficaNueva.getNombre(), graficaNueva.getVram(), graficaNueva.getMarca(), graficaNueva.getFabricante(), graficaNueva.getPrecio());
+            Controlador.insertarGrafica(graficaNueva.getId(), graficaNueva.getNombre(), graficaNueva.getVram(),
+                    graficaNueva.getMarca(), graficaNueva.getFabricante(), graficaNueva.getPrecio());
 
             limpiar();
-            String sql = ("SELECT * FROM graficas");
+            String sql = "SELECT * FROM graficas";
             cargarTabla(sql);
         } catch (SQLException ex) {
-
+            // Manejar la excepción si ocurre un error al insertar en la base de datos
+            JOptionPane.showMessageDialog(null, "Error al insertar en la base de datos: " + ex.getMessage());
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int id = Integer.parseInt(txtID.getText());
-        try {
-            int opcion = JOptionPane.showConfirmDialog(null, "¿Desea borrar también el registro de precios correspondiente?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
-            if (opcion == JOptionPane.YES_OPTION) {
-                File archivo = new File("src/graficas_registro_precios/" + id + ".txt");
-                archivo.delete();
-            }
+        String idString = txtID.getText();
 
+        // Validar que idString sea un valor numérico
+        if (!idString.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "El ID debe ser un valor numérico");
+            return;
+        }
+
+        int id = Integer.parseInt(idString);
+
+        try {
             Controlador.eliminarGrafica(id);
-            limpiar();
-            String sql = ("SELECT * FROM graficas");
+
+            
+            String sql = "SELECT * FROM graficas";
             cargarTabla(sql);
         } catch (SQLException ex) {
-
+            // Manejar la excepción si ocurre un error al eliminar en la base de datos
+            JOptionPane.showMessageDialog(null, "Error al eliminar en la base de datos: " + ex.getMessage());
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 

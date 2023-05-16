@@ -63,7 +63,7 @@ public class Controlador {
             stmt.setString(5, fabricante);
             stmt.setDouble(6, precio);
             stmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Gráfica modificada correctamente.");
+            JOptionPane.showMessageDialog(null, "Gráfica registrada correctamente.");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al insertar la gráfica: " + ex.getMessage());
         }
@@ -98,9 +98,9 @@ public class Controlador {
             stmt.setInt(1, id);
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Gráfica eliminada correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró una gráfica con el ID proporcionado.");
-        }
+        } 
+            
+        
     }
 
     public static String obtenerHistorialPrecios(int idGrafica) throws IOException {
