@@ -27,7 +27,7 @@ public class vista extends javax.swing.JFrame {
         cargarTabla(sql);
 
     }
-    
+
     // TABLA CON CONTENIDO DE LA BBDD
     public void cargarTabla(String sql) {
         try {
@@ -120,6 +120,7 @@ public class vista extends javax.swing.JFrame {
         Table.add(new JScrollPane(tabla));
          */
     }
+
     // LLAMAMIENTO A LA FUNCION DE HISTORIAL DE PRECIOS
     public void historialPrecioViewer() throws IOException {
         String idString = txtID.getText();
@@ -127,6 +128,7 @@ public class vista extends javax.swing.JFrame {
         String text = Controlador.obtenerHistorialPrecios(id);
         txtHistorialPrecios.setText(text);
     }
+
     // FUNCION PARA LIMPIAR LOS CAMPOS DE TEXTO
     public void limpiar() {
         txtID.setText(null);
@@ -666,7 +668,7 @@ public class vista extends javax.swing.JFrame {
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_VRAMActionPerformed
-    
+
     private void WebActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WebActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_WebActionPerformed
@@ -756,7 +758,7 @@ public class vista extends javax.swing.JFrame {
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_MarcaActionPerformed
-    
+
     // BOTON LLAMAMIENTO A LA FUNCION MODIFICAR PARA EDITAR LA GRAFICA EN LA BBDD
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         int id = Integer.parseInt(txtID.getText());
@@ -796,27 +798,33 @@ public class vista extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String idString = txtID.getText();
-        int id = idString.isEmpty() ? 0 : Integer.parseInt(idString);
 
-        String sql = "SELECT * FROM graficas WHERE id='" + id + "'";
+        // Validar que idString sea un valor numérico
+        if (idString.matches("\\d+")) {
+            int id = Integer.parseInt(idString);
 
-        try {
-            Grafica g = Controlador.buscarGraficaPorId(id);
-            if (g != null) {
-                txtNombre.setText(g.getNombre());
-                txtVram.setText(String.valueOf(g.getVram()));
-                txtMarca.setText(g.getMarca());
-                txtFabricante.setText(g.getFabricante());
-                txtPrecio.setText(String.valueOf(g.getPrecio()));
-            } else {
+            String sql = "SELECT * FROM graficas WHERE id='" + id + "'";
 
-                sql = ("SELECT * FROM graficas");
-                cargarTabla(sql);
+            try {
+                Grafica g = Controlador.buscarGraficaPorId(id);
+                if (g != null) {
+                    txtNombre.setText(g.getNombre());
+                    txtVram.setText(String.valueOf(g.getVram()));
+                    txtMarca.setText(g.getMarca());
+                    txtFabricante.setText(g.getFabricante());
+                    txtPrecio.setText(String.valueOf(g.getPrecio()));
+                } else {
+                    sql = "SELECT * FROM graficas";
+                    cargarTabla(sql);
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
+            cargarTabla(sql);
+        } else {
+            // idString no es un valor numérico
+            JOptionPane.showMessageDialog(null, "El ID debe ser un valor numérico");
         }
-        cargarTabla(sql);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
