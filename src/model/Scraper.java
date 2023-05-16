@@ -237,10 +237,11 @@ public class Scraper {
 
         for (Grafica grafica : graficas) {
             int id = grafica.getId();
-            double precio = grafica.getPrecio();
+            float precio = (float) grafica.getPrecio();
 
-            statement.setDouble(1, precio);
-            statement.setInt(2, id);
+            
+            statement.setInt(1, id);
+            statement.setFloat(6, precio);
             statement.executeUpdate();
         }
 
