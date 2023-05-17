@@ -1,7 +1,6 @@
 package main;
 
 import bbdd.*;
-import controller.*;
 import view.*;
 import model.*;
 import java.sql.SQLException;
@@ -24,6 +23,8 @@ public class Main {
         // Mostrar la vista principal
         vista miVista = new vista();
         miVista.setVisible(true);
+        
+        Conexion.cerrar();
     }
 
 }
