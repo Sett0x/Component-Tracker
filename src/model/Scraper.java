@@ -102,7 +102,7 @@ public class Scraper {
         JOptionPane.showMessageDialog(null, "Scaneo Completado");
     }
 
-    // VER CONTENIDO EN EL ARRAYLIST
+    // FUNCION AUXILIAR VER CONTENIDO EN EL ARRAYLIST
     public void VerDatos() {
         for (int i = 0; i < graficas.size(); i++) {
             Grafica curr = graficas.get(i);
@@ -293,7 +293,7 @@ public class Scraper {
         return historialPrecios.toString();
     }
 
-    // FUNCION AUXILIAR
+    // FUNCION AUXILIAR MOSTRAR DATOS DE LA BBDD
     public static void mostrarDatos() {
         Conexion.conectar();
         String sql = "SELECT * FROM graficas";

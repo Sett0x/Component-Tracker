@@ -30,7 +30,7 @@ public class Conexion {
             e.printStackTrace();
         }
     }
-
+    // EJECUTAR SENTENCIA
     public static ResultSet ejecutarSentencia(String sentencia) {
         try {
             resultado = consulta.executeQuery(sentencia);
@@ -40,7 +40,7 @@ public class Conexion {
         }
         return resultado;
     }
-
+    // EJECUTAR UPDATE
     public static void ejecutarUpdate(String sentencia) {
         try {
             consulta.executeUpdate(sentencia);

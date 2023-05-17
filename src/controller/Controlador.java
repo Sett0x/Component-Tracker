@@ -6,33 +6,35 @@ import bbdd.*;
 import java.io.IOException;
 import static model.Scraper.graficas;
 import java.sql.SQLException;
-import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 import static model.Scraper.*;
 
 public class Controlador {
-
+    // CONECTAR A LA BBDD
     public static void Conectar() throws SQLException {
         Conexion.conectar();
     }
-
+    // DESCONECTAR DE LA BBDD
+    public static void Desconectar() throws SQLException {
+        Conexion.cerrar();
+    }
+    // SENTENCIA A LA BBDD
     public static ResultSet Sentencia(String sent) throws SQLException {
         return Conexion.ejecutarSentencia(sent);
     }
-
+    // UPDATE A LA BBDD
     public static void CUpate(String sent) throws SQLException {
         Conexion.ejecutarUpdate(sent);
     }
-
+    // EJECUCION DE SCRAPE
     public static void Scan() throws SQLException {
         Scraper.scrape();
     }
-
+    // UPDATE DE GRAFICAS
     public static void Update() throws SQLException {
         Scraper.updateGraficas(graficas);
     }
-
+    // FUNCION PARA BUSCAR GRAFICA POR ID EN LA BBDD
     public static Grafica buscarGraficaPorId(int id) throws SQLException {
         String sql = "SELECT * FROM graficas WHERE id = " + id;
         ResultSet rs = Sentencia(sql);
@@ -50,7 +52,7 @@ public class Controlador {
             return null; // No se encontró una gráfica con ese ID
         }
     }
-
+    // FUNCION PARA INSERTAR GRAFICA EN LA BBDD
     public static void insertarGrafica(int id, String nombre, int vram, String marca, String fabricante, double precio) throws SQLException {
         try {
             Conectar();
@@ -69,7 +71,7 @@ public class Controlador {
         }
 
     }
-
+    // FUNCION PARA MODIFICAR GRAFICA EN LA BBDD
     public static void modificarGrafica(int id, String nombre, int vram, String marca, String fabricante, double precio) throws SQLException {
         Conectar();
         Grafica grafica = buscarGraficaPorId(id);
@@ -88,7 +90,7 @@ public class Controlador {
             JOptionPane.showMessageDialog(null, "No se encontró una gráfica con el ID proporcionado.");
         }
     }
-
+    // FUNCION PARA ELIMINAR GRAFICA EN LA BBDD
     public static void eliminarGrafica(int id) throws SQLException {
         Conectar();
         Grafica grafica = buscarGraficaPorId(id);
@@ -102,7 +104,7 @@ public class Controlador {
             
         
     }
-
+    // FUNCION PARA MOSTRAR EL HISTORIAL DE PRECIOS
     public static String obtenerHistorialPrecios(int idGrafica) throws IOException {
     return leerHistorialPrecios(idGrafica);
 }

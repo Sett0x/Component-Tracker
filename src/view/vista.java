@@ -622,7 +622,7 @@ public class vista extends javax.swing.JFrame {
         String sql = ("SELECT * FROM graficas");
         cargarTabla(sql);
     }//GEN-LAST:event_btnScanActionPerformed
-
+    // FILTRAR LA BBDD POR VRAM
     private void Order_VRAMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_VRAMActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
         String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
@@ -680,7 +680,7 @@ public class vista extends javax.swing.JFrame {
             Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnUpdateActionPerformed
-
+    // FILTRAR LA BBDD POR FABRICANTE
     private void Order_FabricanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_FabricanteActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
         String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
@@ -699,7 +699,7 @@ public class vista extends javax.swing.JFrame {
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_FabricanteActionPerformed
-
+    // FILTRAR LA BBDD POR PRECIO
     private void Order_PrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_PrecioActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
         String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
@@ -718,7 +718,7 @@ public class vista extends javax.swing.JFrame {
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_PrecioActionPerformed
-
+    // FILTRAR LA BBDD POR MARCA
     private void Order_MarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_MarcaActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
         String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
@@ -830,13 +830,13 @@ public class vista extends javax.swing.JFrame {
     private void txtMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMarcaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMarcaActionPerformed
-
+    // BOTON PARA LLAMAR A LA FUNCION LIMPIAR
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         limpiar();
         String sql = ("SELECT * FROM graficas");
         cargarTabla(sql);
     }//GEN-LAST:event_btnLimpiarActionPerformed
-
+    // LLAMAMIENTO A LA FUNCION DE BUSQUEDA PARA FILTRAR EN LA BBDD
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String idString = txtID.getText();
 
@@ -867,7 +867,7 @@ public class vista extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "El ID debe ser un valor numérico");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
-
+    // LLAMAMIENTO A LA FUNCION DE INSERTAR PARA REGISTRAR UNA GRAFFICA EN LA BBDD
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         String idString = txtID.getText();
         String nombre = txtNombre.getText();
@@ -930,7 +930,7 @@ public class vista extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error al insertar en la base de datos: " + ex.getMessage());
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
-
+    // LLAMAMIENTO A LA FUNCION DE ELIMINAR PARA ELIMINAR UNA GRAFFICA EN LA BBDD
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         String idString = txtID.getText();
 
@@ -952,7 +952,7 @@ public class vista extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error al eliminar en la base de datos: " + ex.getMessage());
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
-
+    // BORRADO DE LA BBDD
     private void borrarbbddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarbbddActionPerformed
         String sql = ("DELETE FROM graficas");
         try {
