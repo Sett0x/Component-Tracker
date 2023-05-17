@@ -1,9 +1,6 @@
 package view;
 
 import controller.*;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -11,7 +8,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -27,7 +23,7 @@ public class vista extends javax.swing.JFrame {
         // double width = screenSize.getWidth();
         // double height = screenSize.getHeight();
         setLocationRelativeTo(null);
-        
+
         // DEFAULT QUERY PARA CARGA DE BBDD
         String sql = ("SELECT * FROM graficas");
         // CARGA DEFAULT DE LA TABLA
@@ -113,19 +109,7 @@ public class vista extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
-        /*
-        // Crear la tabla
-        JTable tabla = new JTable();
 
-        // Obtener el modelo de la tabla del controlador
-        DefaultTableModel modelo = Controlador.obtenerDatosTabla();
-
-        // Establecer el modelo de la tabla
-        Tablebbdd.setModel(modelo);
-
-        // Agregar la tabla al panel de la vista
-        Table.add(new JScrollPane(tabla));
-         */
     }
 
     // LLAMAMIENTO A LA FUNCION DE HISTORIAL DE PRECIOS
@@ -612,11 +596,8 @@ public class vista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     //BOTON DE SALIR DEL PROGRAMA
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        String[] mensajesDespedida = {"¡Con Dios!", "La mineria ya no renta, estando como está la luz...",
-            "Que no te engañen en el black friday ese.", "La gráfica que quieres no va a bajar...",
-            "Lo que sea, pero una Zotac no..."};
-        int indiceMensaje = (int) (Math.random() * mensajesDespedida.length);
-        JOptionPane.showMessageDialog(null, mensajesDespedida[indiceMensaje]);
+        String mensajeDespedida = Controlador.despedida();
+        JOptionPane.showMessageDialog(null, mensajeDespedida);
         dispose();
     }//GEN-LAST:event_btnExitActionPerformed
     // BOTON LLAMAMIENTO A LA FUNCION SCAN PARA HACER EL SCRAPE
@@ -633,45 +614,7 @@ public class vista extends javax.swing.JFrame {
     private void Order_VRAMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_VRAMActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
         String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
-        String sql = "";
-
-        switch (ordenSeleccionado) {
-            case "Ascendente":
-                sql = "SELECT * FROM graficas ORDER BY vram ASC";
-                break;
-            case "Descendente":
-                sql = "SELECT * FROM graficas ORDER BY vram DESC";
-                break;
-            case "2GB":
-                sql = "SELECT * FROM graficas WHERE vram = '2'";
-                break;
-            case "4GB":
-                sql = "SELECT * FROM graficas WHERE vram = '4'";
-                break;
-            case "6GB":
-                sql = "SELECT * FROM graficas WHERE vram = '6'";
-                break;
-            case "8GB":
-                sql = "SELECT * FROM graficas WHERE vram = '8'";
-                break;
-            case "10GB":
-                sql = "SELECT * FROM graficas WHERE vram = '10'";
-                break;
-            case "12GB":
-                sql = "SELECT * FROM graficas WHERE vram = '12'";
-                break;
-            case "16GB":
-                sql = "SELECT * FROM graficas WHERE vram = '16'";
-                break;
-            case "20GB":
-                sql = "SELECT * FROM graficas WHERE vram = '20'";
-                break;
-            case "24GB":
-                sql = "SELECT * FROM graficas WHERE vram = '24'";
-                break;
-            default:
-                break;
-        }
+        String sql = Controlador.filtroVRAM(ordenSeleccionado);
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_VRAMActionPerformed
@@ -691,18 +634,7 @@ public class vista extends javax.swing.JFrame {
     private void Order_FabricanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_FabricanteActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
         String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
-        String sql = "";
-
-        switch (ordenSeleccionado) {
-            case "Nvidia":
-                sql = "SELECT * FROM graficas WHERE fabricante = 'Nvidia'";
-                break;
-            case "AMD":
-                sql = "SELECT * FROM graficas WHERE fabricante = 'AMD'";
-                break;
-            default:
-                break;
-        }
+        String sql = Controlador.filtroFabricante(ordenSeleccionado);
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_FabricanteActionPerformed
@@ -710,18 +642,7 @@ public class vista extends javax.swing.JFrame {
     private void Order_PrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_PrecioActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
         String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
-        String sql = "";
-
-        switch (ordenSeleccionado) {
-            case "Ascendente":
-                sql = "SELECT * FROM graficas ORDER BY precio ASC";
-                break;
-            case "Descendente":
-                sql = "SELECT * FROM graficas ORDER BY precio DESC";
-                break;
-            default:
-                break;
-        }
+        String sql = Controlador.filtroPrecio(ordenSeleccionado);
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_PrecioActionPerformed
@@ -729,39 +650,7 @@ public class vista extends javax.swing.JFrame {
     private void Order_MarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Order_MarcaActionPerformed
         JComboBox comboBoxOrden = (JComboBox) evt.getSource();
         String ordenSeleccionado = comboBoxOrden.getSelectedItem().toString();
-        String sql = "";
-
-        switch (ordenSeleccionado) {
-            case "Asrock":
-                sql = "SELECT * FROM graficas WHERE marca = 'ASROCK'";
-                break;
-            case "Asus":
-                sql = "SELECT * FROM graficas WHERE marca = 'ASUS'";
-                break;
-            case "Gigabyte":
-                sql = "SELECT * FROM graficas WHERE marca = 'GIGABYTE'";
-                break;
-            case "MSI":
-                sql = "SELECT * FROM graficas WHERE marca = 'MSI'";
-                break;
-            case "Palit":
-                sql = "SELECT * FROM graficas WHERE marca = 'PALIT'";
-                break;
-            case "PNY":
-                sql = "SELECT * FROM graficas WHERE marca = 'PNY'";
-                break;
-            case "Zotac":
-                sql = "SELECT * FROM graficas WHERE marca = 'ZOTAC'";
-                break;
-            case "Ascendente":
-                sql = "SELECT * FROM graficas ORDER BY marca ASC";
-                break;
-            case "Descendente":
-                sql = "SELECT * FROM graficas ORDER BY marca DESC";
-                break;
-            default:
-                break;
-        }
+        String sql = Controlador.filtroMarca(ordenSeleccionado);
 
         cargarTabla(sql);
     }//GEN-LAST:event_Order_MarcaActionPerformed
@@ -961,32 +850,10 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
     // BORRADO DE LA BBDD
     private void borrarbbddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrarbbddActionPerformed
-        String sql = ("DELETE FROM graficas");
-        try {
-            Controlador.CUpate(sql);
-            int opcion = JOptionPane.showConfirmDialog(null, "¿Desea borrar también el historial de precios?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
-            if (opcion == JOptionPane.YES_OPTION) {
-                File carpeta = new File("src/graficas_registro_precios");
-                File[] archivos = carpeta.listFiles();
-                if (archivos != null) {
-                    for (File archivo : archivos) {
-                        archivo.delete();
-                    }
-                }
-                if (carpeta.delete()) {
-                    JOptionPane.showMessageDialog(null, "Historial de precios borrado correctamente.");
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo borrar la carpeta.");
-                }
-            }
-            JOptionPane.showMessageDialog(null, "BBDD borrada correctamente.");
-            limpiar();
-            sql = ("SELECT * FROM graficas");
-            cargarTabla(sql);
-        } catch (SQLException ex) {
-            Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "ERROR al borrar la BBDD. Aguantará un día más.");
-        }
+        Controlador.BorrarBBDD();
+        limpiar();
+        String sql = ("SELECT * FROM graficas");
+        cargarTabla(sql);
     }//GEN-LAST:event_borrarbbddActionPerformed
 
     /**
