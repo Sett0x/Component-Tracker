@@ -17,7 +17,6 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 
-
 public class Scraper {
 
     public static ArrayList<Grafica> graficas = new ArrayList<>();
@@ -240,16 +239,15 @@ public class Scraper {
             int id = grafica.getId();
             float precio = (float) grafica.getPrecio();
 
-            
-            statement.setInt(1, id);
-            statement.setFloat(6, precio);
+            statement.setFloat(1, precio);
+            statement.setInt(2, id);
             statement.executeUpdate();
         }
 
         statement.close();
         JOptionPane.showMessageDialog(null, "Actualización Completada");
     }
-    
+
     // REGISTRO DE PRECIOS ANTERIORES EN TXT
     public static void guardarPrecio(String id, String nombreGrafica, double precioAnterior) {
         try {
@@ -279,7 +277,7 @@ public class Scraper {
         }
 
     }
-    
+
     // LECTURA DE PRECIOS ANTERIORES EN TXT
     public static String leerHistorialPrecios(int idGrafica) throws IOException {
         StringBuilder historialPrecios = new StringBuilder();
@@ -294,7 +292,7 @@ public class Scraper {
         }
         return historialPrecios.toString();
     }
-    
+
     // FUNCION AUXILIAR
     public static void mostrarDatos() {
         Conexion.conectar();

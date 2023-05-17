@@ -761,25 +761,66 @@ public class vista extends javax.swing.JFrame {
 
     // BOTON LLAMAMIENTO A LA FUNCION MODIFICAR PARA EDITAR LA GRAFICA EN LA BBDD
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        int id = Integer.parseInt(txtID.getText());
+        String idString = txtID.getText();
         String nombre = txtNombre.getText();
-        int vram = Integer.parseInt(txtVram.getText());
+        String vramString = txtVram.getText();
         String marca = txtMarca.getText();
         String fabricante = txtFabricante.getText();
-        double precio = Double.parseDouble(txtPrecio.getText());
+        String precioString = txtPrecio.getText();
+
+        // Validar que idString sea un valor numérico
+        if (!idString.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "El ID debe ser un valor numérico");
+            return;
+        }
+
+        // Validar que vramString sea un valor numérico
+        if (!vramString.matches("\\d+")) {
+            JOptionPane.showMessageDialog(null, "VRAM debe ser un valor numérico");
+            return;
+        }
+
+        // Validar que precioString sea un valor numérico
+        if (!precioString.matches("\\d+(\\.\\d+)?")) {
+            JOptionPane.showMessageDialog(null, "El precio debe ser un valor numérico");
+            return;
+        }
+
+        // Validar que nombre contenga solo letras, números, guiones y espacios
+        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s\\d-]+")) {
+            JOptionPane.showMessageDialog(null, "El nombre solo puede contener letras, números, guiones y espacios");
+            return;
+        }
+
+        // Validar que marca contenga solo letras y caracteres permitidos
+        if (!marca.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
+            JOptionPane.showMessageDialog(null, "La marca solo puede contener letras y espacios");
+            return;
+        }
+
+        // Validar que fabricante contenga solo letras y caracteres permitidos
+        if (!fabricante.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
+            JOptionPane.showMessageDialog(null, "El fabricante solo puede contener letras y espacios");
+            return;
+        }
+
+        int id = Integer.parseInt(idString);
+        int vram = Integer.parseInt(vramString);
+        double precio = Double.parseDouble(precioString);
 
         Grafica graficaModificada = new Grafica(id, nombre, vram, marca, fabricante, precio);
 
         try {
-            Controlador.modificarGrafica(graficaModificada.getId(), graficaModificada.getNombre(), graficaModificada.getVram(), graficaModificada.getMarca(), graficaModificada.getFabricante(), graficaModificada.getPrecio());
-
-            limpiar();
-            String sql = ("SELECT * FROM graficas");
-            cargarTabla(sql);
-
+            Controlador.modificarGrafica(graficaModificada.getId(), graficaModificada.getNombre(), graficaModificada.getVram(),
+                    graficaModificada.getMarca(), graficaModificada.getFabricante(), graficaModificada.getPrecio());
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al actualizar la gráfica: " + ex.getMessage());
+
         }
+
+        limpiar();
+        String sql = ("SELECT * FROM graficas");
+        cargarTabla(sql);
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
@@ -904,7 +945,6 @@ public class vista extends javax.swing.JFrame {
         try {
             Controlador.eliminarGrafica(id);
 
-            
             String sql = "SELECT * FROM graficas";
             cargarTabla(sql);
         } catch (SQLException ex) {
