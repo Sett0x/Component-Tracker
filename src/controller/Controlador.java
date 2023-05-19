@@ -58,12 +58,11 @@ public class Controlador {
                     for (File archivo : archivos) {
                         archivo.delete();
                     }
-                }
-                if (carpeta.delete()) {
                     JOptionPane.showMessageDialog(null, "Historial de precios borrado correctamente.");
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo borrar la carpeta.");
+                    JOptionPane.showMessageDialog(null, "No se encontraron archivos en la carpeta.");
                 }
+
             }
             JOptionPane.showMessageDialog(null, "BBDD borrada correctamente.");
 
@@ -256,17 +255,38 @@ public class Controlador {
 
     // FUNCION PARA ELIMINAR GRAFICA EN LA BBDD
     public static void eliminarGrafica(int id) throws SQLException {
-        Conectar();
-        Grafica grafica = buscarGraficaPorId(id);
-        if (grafica != null) {
+    Conectar();
+    Grafica grafica = buscarGraficaPorId(id);
+    if (grafica != null) {
+        int opcion = JOptionPane.showConfirmDialog(null, "¿Desea borrar también el archivo de registro de precios?", "Confirmar borrado", JOptionPane.YES_NO_OPTION);
+        if (opcion == JOptionPane.YES_OPTION) {
             String sql = "DELETE FROM graficas WHERE id = ?";
-            PreparedStatement stmt = Conexion.preparedStatement(sql);
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Gráfica eliminada correctamente.");
-        }
+            try (PreparedStatement stmt = Conexion.preparedStatement(sql)) {
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Gráfica eliminada correctamente.");
 
+                String nombreArchivo = id + ".txt";
+                File archivo = new File("./src/graficas_registro_precios/" + nombreArchivo);
+                if (archivo.exists() && archivo.isFile()) {
+                    if (archivo.delete()) {
+                        JOptionPane.showMessageDialog(null, "Archivo de registro de precios borrado correctamente.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo borrar el archivo de registro de precios.");
+                    }
+                }
+            }
+        } else {
+            String sql = "DELETE FROM graficas WHERE id = ?";
+            try (PreparedStatement stmt = Conexion.preparedStatement(sql)) {
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+                JOptionPane.showMessageDialog(null, "Gráfica eliminada correctamente.");
+            }
+        }
     }
+}
+
 
     // FUNCION PARA MOSTRAR EL HISTORIAL DE PRECIOS
     public static String obtenerHistorialPrecios(int idGrafica) throws IOException {
