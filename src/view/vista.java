@@ -86,6 +86,8 @@ public class vista extends javax.swing.JFrame {
                     }
                 }
             });
+            
+            Controlador.Desconectar();
             /*
             // ORDENAMIENTO NO FUNCIONA CORRECTAMENTE, NO ORDENA DE MANERA APROPIADA
             
@@ -105,7 +107,6 @@ public class vista extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
-
     }
 
     // LLAMAMIENTO A LA FUNCION DE HISTORIAL DE PRECIOS

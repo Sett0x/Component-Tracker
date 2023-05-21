@@ -226,6 +226,7 @@ public class Scraper {
                 Conexion.ejecutarUpdate(sql);
             }
         }
+        Conexion.cerrar();
 
     }
 
@@ -246,7 +247,8 @@ public class Scraper {
 
         statement.close();
         JOptionPane.showMessageDialog(null, "Actualización Completada");
-    }
+        Conexion.cerrar();
+    }   
 
     // REGISTRO DE PRECIOS ANTERIORES EN TXT
     public static void guardarPrecio(String id, String nombreGrafica, double precioAnterior) {
@@ -298,6 +300,7 @@ public class Scraper {
         Conexion.conectar();
         String sql = "SELECT * FROM graficas";
         Conexion.ejecutarUpdate(sql);
+        Conexion.cerrar();
     }
 
 }

@@ -23,6 +23,7 @@ public class Utils {
     }
 
     public static Grafica buscarGraficaPorId(int id) throws SQLException {
+        Conexion.conectar();
         String sql = "SELECT * FROM graficas WHERE id = " + id;
         ResultSet rs = Conexion.ejecutarSentencia(sql);
 
@@ -33,8 +34,10 @@ public class Utils {
             String fabricante = rs.getString("fabricante");
             double precio = rs.getDouble("precio");
 
+             Conexion.cerrar();
             return new Grafica(id, nombre, vram, marca, fabricante, precio);
         } else {
+             Conexion.cerrar();
             JOptionPane.showMessageDialog(null, "No se encontró ninguna gráfica con el ID especificado.");
             return null; // No se encontró una gráfica con ese ID
         }
@@ -56,6 +59,7 @@ public class Utils {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error al insertar la gráfica: " + ex.getMessage());
         }
+        Conexion.cerrar();
 
     }
 
@@ -78,6 +82,7 @@ public class Utils {
         } else {
             JOptionPane.showMessageDialog(null, "No se encontró una gráfica con el ID proporcionado.");
         }
+        Conexion.cerrar();
     }
 
     public static void eliminarGrafica(int id) throws SQLException {
@@ -111,9 +116,11 @@ public class Utils {
                 }
             }
         }
+        Conexion.cerrar();
     }
 
     public static void BorrarBBDD() {
+        Conexion.conectar();
         String sql = "DELETE FROM graficas";
         try {
             Conexion.ejecutarUpdate(sql);
@@ -135,6 +142,7 @@ public class Utils {
             Logger.getLogger(Utils.class.getSimpleName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "ERROR al borrar la BBDD. Aguantará un día más.");
         }
+        Conexion.cerrar();
     }
 
 }
