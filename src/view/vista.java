@@ -18,10 +18,6 @@ public class vista extends javax.swing.JFrame {
 
     public vista() {
         initComponents();
-        // this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        // Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        // double width = screenSize.getWidth();
-        // double height = screenSize.getHeight();
         setLocationRelativeTo(null);
 
         // DEFAULT QUERY PARA CARGA DE BBDD
@@ -414,7 +410,7 @@ public class vista extends javax.swing.JFrame {
 
         jLabel12.setText("PRECIO");
 
-        btnGuardar.setText("Guardar");
+        btnGuardar.setText("Insertar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
