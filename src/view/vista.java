@@ -661,40 +661,10 @@ public class vista extends javax.swing.JFrame {
         String fabricante = txtFabricante.getText();
         String precioString = txtPrecio.getText();
 
-        // Validar que idString sea un valor numérico
-        if (!idString.matches("\\d+")) {
-            JOptionPane.showMessageDialog(null, "El ID debe ser un valor numérico");
-            return;
-        }
-
-        // Validar que vramString sea un valor numérico
-        if (!vramString.matches("\\d+")) {
-            JOptionPane.showMessageDialog(null, "VRAM debe ser un valor numérico");
-            return;
-        }
-
-        // Validar que precioString sea un valor numérico
-        if (!precioString.matches("\\d+(\\.\\d+)?")) {
-            JOptionPane.showMessageDialog(null, "El precio debe ser un valor numérico");
-            return;
-        }
-
-        // Validar que nombre contenga solo letras, números, guiones y espacios
-        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s\\d-]+")) {
-            JOptionPane.showMessageDialog(null, "El nombre solo puede contener letras, números, guiones y espacios");
-            return;
-        }
-
-        // Validar que marca contenga solo letras y caracteres permitidos
-        if (!marca.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
-            JOptionPane.showMessageDialog(null, "La marca solo puede contener letras y espacios");
-            return;
-        }
-
-        // Validar que fabricante contenga solo letras y caracteres permitidos
-        if (!fabricante.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
-            JOptionPane.showMessageDialog(null, "El fabricante solo puede contener letras y espacios");
-            return;
+        String error = Controlador.Validations(idString, vramString, precioString, nombre, marca, fabricante);
+        if (error != null) {
+            JOptionPane.showMessageDialog(null, error);
+            return; // Detener el flujo del método si hay un error
         }
 
         int id = Integer.parseInt(idString);
@@ -711,8 +681,7 @@ public class vista extends javax.swing.JFrame {
 
         }
 
-        limpiar();
-        String sql = ("SELECT * FROM graficas");
+        String sql = "SELECT * FROM graficas WHERE id = " + id;
         cargarTabla(sql);
     }//GEN-LAST:event_btnModificarActionPerformed
 
@@ -733,32 +702,33 @@ public class vista extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String idString = txtID.getText();
 
-        // Validar que idString sea un valor numérico
-        if (idString.matches("\\d+")) {
-            int id = Integer.parseInt(idString);
+        String error = Controlador.ValidarID(idString);
+        if (error != null) {
 
-            String sql = "SELECT * FROM graficas WHERE id='" + id + "'";
-
-            try {
-                Grafica g = Controlador.buscarGraficaPorId(id);
-                if (g != null) {
-                    txtNombre.setText(g.getNombre());
-                    txtVram.setText(String.valueOf(g.getVram()));
-                    txtMarca.setText(g.getMarca());
-                    txtFabricante.setText(g.getFabricante());
-                    txtPrecio.setText(String.valueOf(g.getPrecio()));
-                } else {
-                    sql = "SELECT * FROM graficas";
-                    cargarTabla(sql);
-                }
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
-            }
-            cargarTabla(sql);
-        } else {
-            // idString no es un valor numérico
-            JOptionPane.showMessageDialog(null, "El ID debe ser un valor numérico");
+            JOptionPane.showMessageDialog(null, error);
+            return;
         }
+
+        int id = Integer.parseInt(idString);
+
+        String sql = "SELECT * FROM graficas WHERE id='" + id + "'";
+
+        try {
+            Grafica g = Controlador.buscarGraficaPorId(id);
+            if (g != null) {
+                txtNombre.setText(g.getNombre());
+                txtVram.setText(String.valueOf(g.getVram()));
+                txtMarca.setText(g.getMarca());
+                txtFabricante.setText(g.getFabricante());
+                txtPrecio.setText(String.valueOf(g.getPrecio()));
+            } else {
+                sql = "SELECT * FROM graficas";
+                cargarTabla(sql);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al ejecutar la consulta SQL: " + ex.getMessage());
+        }
+        cargarTabla(sql);
     }//GEN-LAST:event_btnBuscarActionPerformed
     // LLAMAMIENTO A LA FUNCION DE INSERTAR PARA REGISTRAR UNA GRAFFICA EN LA BBDD
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -769,55 +739,27 @@ public class vista extends javax.swing.JFrame {
         String fabricante = txtFabricante.getText();
         String precioString = txtPrecio.getText();
 
-        // Validar que idString sea un valor numérico
-        if (!idString.matches("\\d+")) {
-            JOptionPane.showMessageDialog(null, "El ID debe ser un valor numérico");
-            return;
+        String error = Controlador.Validations(idString, vramString, precioString, nombre, marca, fabricante);
+        if (error != null) {
+            JOptionPane.showMessageDialog(null, error);
+            return; // Detener el flujo del método si hay un error
         }
-
-        // Validar que vramString sea un valor numérico
-        if (!vramString.matches("\\d+")) {
-            JOptionPane.showMessageDialog(null, "VRAM debe ser un valor numérico");
-            return;
-        }
-
-        // Validar que precioString sea un valor numérico
-        if (!precioString.matches("\\d+(\\.\\d+)?")) {
-            JOptionPane.showMessageDialog(null, "El precio debe ser un valor numérico");
-            return;
-        }
-
-        // Validar que nombre contenga solo letras, números, guiones y espacios
-        if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s\\d-]+")) {
-            JOptionPane.showMessageDialog(null, "El nombre solo puede contener letras, números, guiones y espacios");
-            return;
-        }
-
-        // Validar que marca contenga solo letras y caracteres permitidos
-        if (!marca.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
-            JOptionPane.showMessageDialog(null, "La marca solo puede contener letras y espacios");
-            return;
-        }
-
-        // Validar que fabricante contenga solo letras y caracteres permitidos
-        if (!fabricante.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
-            JOptionPane.showMessageDialog(null, "El fabricante solo puede contener letras y espacios");
-            return;
-        }
-
-        int id = Integer.parseInt(idString);
-        int vram = Integer.parseInt(vramString);
-        double precio = Double.parseDouble(precioString);
-
-        Grafica graficaNueva = new Grafica(id, nombre, vram, marca, fabricante, precio);
 
         try {
+            int id = Integer.parseInt(idString);
+            int vram = Integer.parseInt(vramString);
+            double precio = Double.parseDouble(precioString);
+
+            Grafica graficaNueva = new Grafica(id, nombre, vram, marca, fabricante, precio);
+
             Controlador.insertarGrafica(graficaNueva.getId(), graficaNueva.getNombre(), graficaNueva.getVram(),
                     graficaNueva.getMarca(), graficaNueva.getFabricante(), graficaNueva.getPrecio());
 
-            limpiar();
-            String sql = "SELECT * FROM graficas";
+            String sql = "SELECT * FROM graficas WHERE id = " + id;
             cargarTabla(sql);
+        } catch (NumberFormatException ex) {
+            // Manejar la excepción si ocurre un error al convertir los valores numéricos
+            JOptionPane.showMessageDialog(null, "Error al convertir los valores numéricos: " + ex.getMessage());
         } catch (SQLException ex) {
             // Manejar la excepción si ocurre un error al insertar en la base de datos
             JOptionPane.showMessageDialog(null, "Error al insertar en la base de datos: " + ex.getMessage());
@@ -828,9 +770,11 @@ public class vista extends javax.swing.JFrame {
         String idString = txtID.getText();
 
         // Validar que idString sea un valor numérico
-        if (!idString.matches("\\d+")) {
-            JOptionPane.showMessageDialog(null, "El ID debe ser un valor numérico");
-            return;
+        String error = Controlador.ValidarID(idString);
+        if (error != null) {
+            // Mostrar mensaje de error si el ID no es un valor numérico
+            JOptionPane.showMessageDialog(null, error);
+            return; // Detener el flujo del método si hay un error
         }
 
         int id = Integer.parseInt(idString);
