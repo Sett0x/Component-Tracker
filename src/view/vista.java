@@ -86,7 +86,6 @@ public class vista extends javax.swing.JFrame {
                     }
                 }
             });
-            
             Controlador.Desconectar();
             /*
             // ORDENAMIENTO NO FUNCIONA CORRECTAMENTE, NO ORDENA DE MANERA APROPIADA
